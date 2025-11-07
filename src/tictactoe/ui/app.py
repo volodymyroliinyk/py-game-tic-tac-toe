@@ -9,7 +9,7 @@ from tkinter import ttk
 # Done:[1]: Bot first step in a game to empty square.
 # Done:[1]: How to draw X or 0 in the grid cell ?
 # Done:[1]: How to catch event on backend side ?
-# TODO:[1]: Replace X and 0 with SVG images.
+# TODO:[2]: Replace X and 0 with SVG images.
 # TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # TODO:[1]: Set up successful combination list and allways check if game ends or not. And showGreen message about Winning.
 
@@ -73,11 +73,11 @@ class GameApp(tk.Tk):
 
         # Grid doc is here  https://tkdocs.com/tutorial/grid.html#sizing
         # Uniform cells
-        for i in range(self.size):
+        for index in range(self.size):
             # Doc https://www.tcl-lang.org/man/tcl8.6/TkCmd/grid.htm#M24 #grid rowconfigure
-            table.grid_rowconfigure(i, weight=1, uniform="grid")
+            table.grid_rowconfigure(index, weight=1, uniform="grid")
             # Doc https://www.tcl-lang.org/man/tcl8.6/TkCmd/grid.htm#M24 #grid columnconfigure
-            table.grid_columnconfigure(i, weight=1, uniform="grid")
+            table.grid_columnconfigure(index, weight=1, uniform="grid")
 
         # Create 3×3 buttons
         self.cells = {}
@@ -121,8 +121,8 @@ class GameApp(tk.Tk):
         # Update the text/status of the buttons according to the board
         for row in range(self.size):
             for col in range(self.size):
-                i = self.idx(row, col)
-                txt = self.board[i] or ""
+                index = self.idx(row, col)
+                txt = self.board[index] or ""
                 self.cells[(row, col)].config(text=txt, state=("disabled" if txt else "normal"))
 
     # Method "render" ends.
@@ -149,25 +149,28 @@ class GameApp(tk.Tk):
 
     # Method "on_start" ends.
 
-    def on_cell_click(self, r, c):
+    def on_cell_click(self, row, col):
         if not self.started:
             return  # first you need to start
 
-        i = self.idx(r, c)
-        if self.board[i] is not None:
+        index = self.idx(row, col)
+        if self.board[index] is not None:
             return
 
         # Allow a person's move only when it is his turn
         if self.current != self.human.get():
             return
 
-        self.board[i] = self.human.get()
+        self.board[index] = self.human.get()
         self.current = self.bot
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
         # Change game board state
         self.render()
 
+        # TODO:[1]: Check winning combination
+        # TODO:[1]: Show winner User OR Bot
+        # TODO:[1]: Stop game if someone winning
         # the simplest bot immediately responds
         self.after(150, self.bot_move)
 
@@ -179,6 +182,7 @@ class GameApp(tk.Tk):
         if not self.started or self.current != self.bot:
             return
 
+        # TODO:[1]: More smart step here, analyze potentially winning steps
         # Find the first free cell
         for i, cell in enumerate(self.board):
             if cell is None:
