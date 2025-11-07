@@ -9,9 +9,9 @@ from tkinter import ttk
 # Done:[1]: Bot first step in a game to empty square.
 # Done:[1]: How to draw X or 0 in the grid cell ?
 # Done:[1]: How to catch event on backend side ?
-# TODO:[2]: Replace X and 0 with SVG images.
-# TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # TODO:[1]: Set up successful combination list and allways check if game ends or not. And showGreen message about Winning.
+# TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
+# TODO:[2]: Replace X and 0 with SVG images.
 
 # https://docs.python.org/3.12/library/tkinter.html
 # Window generator here.
@@ -194,9 +194,9 @@ class GameApp(tk.Tk):
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
         # Change game board state
         self.render()
-
     # Method "bot_move" ends.
 
+    # Game board reset for a new game
     def on_reset(self):
         self.board = [None] * (self.size * self.size)
         self.started = False
@@ -206,4 +206,26 @@ class GameApp(tk.Tk):
         for btn in self.cells.values():
             btn.config(text="", state="normal")
     # Method "on_reset" ends.
+
+    # Winning combinations for X
+    # XXX 000 000 X00 0X0 00X X00 00X
+    # 000 XXX 000 X00 0X0 00X 0X0 0X0
+    # 000 000 XXX X00 0X0 00X 00X X00
+
+    # Winning combinations for 0
+    # 000 XXX XXX 0XX X0X XX0 0XX XX0
+    # XXX 000 XXX 0XX X0X XX0 X0X X0X
+    # XXX XXX 000 0XX X0X XX0 XX0 0XX
+
+    # Indexes
+    # 0 1 2
+    # 3 4 5
+    # 6 7 8
+
+    # Winning combinations for indexes TODO:[1]: Finish that
+    # 012
+    #
+    #
+
+
 # Class "GameApp" ends.
