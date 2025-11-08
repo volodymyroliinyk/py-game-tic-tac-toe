@@ -9,10 +9,14 @@ from tkinter import ttk
 # Done:[1]: Bot first step in a game to empty square.
 # Done:[1]: How to draw X or 0 in the grid cell ?
 # Done:[1]: How to catch event on backend side ?
-# TODO:[1]: Set up successful combination list and allways check if game end or not. And showGreen message about Winning.
+# TODO:[1]: Set up successful combination list and allways check if game end or not. And show Green message about Winning.
 # TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # TODO:[2]: Replace X and 0 with SVG images.
-# TODO:[2]: Unit testing for functions and like selenium for the frontend, if it is possible.
+# TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
+# TODO:[1]: ? help icon with instruction how to play this game
+# TODO:[1]: Mac OS runner (without installation).
+# TODO:[1]: Windows OS runner (without installation).
+# TODO:[1]: Ubuntu OS runner (without installation).
 
 # Winning combinations for X
 # XXX 000 000 X00 0X0 00X X00 00X
@@ -305,7 +309,12 @@ class GameApp(tk.Tk):
     def end_game(self, winner):
         self.started = False
         self.winner = winner
-        # TODO:[1]: Show winner User OR Bot
-        # TODO:[1]; show winning message and winner and block board for the next step
+
+        if self.bot == winner:
+            messageSubstring = "Bot"
+        else:
+            messageSubstring = "User"
+        # if condition end.
+        self.status_var.set(f"!!!  {messageSubstring} WINS!  !!!")
     # Method "end_game" end.
 # Class "GameApp" end.
