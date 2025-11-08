@@ -9,9 +9,41 @@ from tkinter import ttk
 # Done:[1]: Bot first step in a game to empty square.
 # Done:[1]: How to draw X or 0 in the grid cell ?
 # Done:[1]: How to catch event on backend side ?
-# TODO:[1]: Set up successful combination list and allways check if game ends or not. And showGreen message about Winning.
+# TODO:[1]: Set up successful combination list and allways check if game end or not. And showGreen message about Winning.
 # TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # TODO:[2]: Replace X and 0 with SVG images.
+# TODO:[2]: Unit testing for functions and like selenium for the frontend, if it is possible.
+
+# Winning combinations for X
+# XXX 000 000 X00 0X0 00X X00 00X
+# 000 XXX 000 X00 0X0 00X 0X0 0X0
+# 000 000 XXX X00 0X0 00X 00X X00
+
+# Winning combinations for 0
+# 000 XXX XXX 0XX X0X XX0 0XX XX0
+# XXX 000 XXX 0XX X0X XX0 X0X X0X
+# XXX XXX 000 0XX X0X XX0 XX0 0XX
+
+# Indexes
+#  0 1 2
+#  3 4 5
+#  6 7 8
+
+# Winning combinations for indexes
+# 012, 345, 678, 036, 147, 258, 048, 246
+#
+#  Done:[1]: Need build Method which can check if current combination is successful!
+#
+WINNING_COMBINATIONS = [
+    (0, 1, 2),
+    (3, 4, 5),
+    (6, 7, 8),
+    (0, 3, 6),
+    (1, 4, 7),
+    (2, 5, 8),
+    (0, 4, 8),
+    (2, 4, 6),
+]
 
 # https://docs.python.org/3.12/library/tkinter.html
 # Window generator here.
@@ -35,6 +67,7 @@ class GameApp(tk.Tk):
         self.bot = "O"  # will update at startup
         self.current = "X"  # who walks now
         self.started = False  # whether they pressed Start
+        self.winner = None
 
 
         # Label Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
@@ -78,6 +111,7 @@ class GameApp(tk.Tk):
             table.grid_rowconfigure(index, weight=1, uniform="grid")
             # Doc https://www.tcl-lang.org/man/tcl8.6/TkCmd/grid.htm#M24 #grid columnconfigure
             table.grid_columnconfigure(index, weight=1, uniform="grid")
+        # for loop end.
 
         # Create 3×3 buttons
         self.cells = {}
@@ -98,6 +132,8 @@ class GameApp(tk.Tk):
                 #  It takes a string combining compass directions (e.g., "n", "s", "e", "w", "ns", "ew", "nsew").
                 btn.grid(row=row, column=col, sticky="nsew", padx=4, pady=4)
                 self.cells[(row, col)] = btn
+            # for loop end.
+        # for loop end.
 
         # --- Reset ---
         # Frame Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
@@ -107,14 +143,14 @@ class GameApp(tk.Tk):
         # on_reset method triggering.
         ttk.Button(bottom, text="Reset", command=self.on_reset).pack()
 
-    # Method "__init__" ends.
+    # Method "__init__" end.
 
     # --- Helpers ---
     # Convert to one-dimensional list? return index 0-8
     def idx(self, row, col):
         return row * self.size + col
 
-    # Method "idx" ends.
+    # Method "idx" end.
 
     # Game board appearance update
     def render(self):
@@ -124,8 +160,10 @@ class GameApp(tk.Tk):
                 index = self.idx(row, col)
                 txt = self.board[index] or ""
                 self.cells[(row, col)].config(text=txt, state=("disabled" if txt else "normal"))
+            # for loop end.
+        # for loop end.
 
-    # Method "render" ends.
+    # Method "render" end.
 
     # --- Events ---
     # Start action, changing game board state
@@ -133,10 +171,16 @@ class GameApp(tk.Tk):
         # Exit from method if already started
         if self.started:
             return
+        # if condition end.
 
         # Game started status
         self.started = True
-        self.bot = "O" if self.human.get() == "X" else "X"
+
+        if self.human.get() == "X":
+            self.bot = "O"
+        else:
+            self.bot = "X"
+
         self.current = "X"
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
@@ -144,57 +188,88 @@ class GameApp(tk.Tk):
         # If the person has chosen "O", the bot walks first
         if self.human.get() == "O":
             self.bot_move()
+        # if condition end.
+
         # Change game board state
         self.render()
 
-    # Method "on_start" ends.
+    # Method "on_start" end.
 
     def on_cell_click(self, row, col):
-        if not self.started:
-            return  # first you need to start
+        print(f"CLICKED: row={row}, col={col}")  # debug
+        print(f"BOARD before move: {self.board}")  # debug
 
+        # First you need to start
+        if not self.started:
+            return
+        # if condition end.
+
+        # Skip if cell is already busy
         index = self.idx(row, col)
         if self.board[index] is not None:
             return
+        # if condition end.
 
         # Allow a person's move only when it is his turn
         if self.current != self.human.get():
             return
+        # if condition end.
 
         self.board[index] = self.human.get()
+        print(f"BOARD after move: {self.board}")  #debug
+
         self.current = self.bot
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
         # Change game board state
         self.render()
 
-        # TODO:[1]: Check winning combination
-        # TODO:[1]: Show winner User OR Bot
-        # TODO:[1]: Stop game if someone winning
+        # Check winning combination
+        winner = self.check_winner()
+        if winner:
+            print(f"winner: {winner}")  # debug
+            # Stop game if someone winning
+            self.end_game(winner)
+            return
+        # if condition end.
+
         # the simplest bot immediately responds
         self.after(150, self.bot_move)
 
-    # Method "on_cell_click" ends.
+    # Method "on_cell_click" end.
 
     # Bot step
     def bot_move(self):
         # If the game hasn't started or it's not the bot's turn now, we don't do anything
         if not self.started or self.current != self.bot:
             return
+        # if condition end.
 
         # TODO:[1]: More smart step here, analyze potentially winning steps
         # Find the first free cell
-        for i, cell in enumerate(self.board):
+        for index, cell in enumerate(self.board):
             if cell is None:
-                self.board[i] = self.bot
+                self.board[index] = self.bot
+
                 break
+            # if condition end.
+        # for loop end.
 
         self.current = self.human.get()
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
         # Change game board state
         self.render()
-    # Method "bot_move" ends.
+
+        # Check winning combination For Bot.
+        winner = self.check_winner()
+        if winner:
+            print(f"winner: {winner}")  # debug
+            self.end_game(winner)
+            return
+        # if condition end.
+
+    # Method "bot_move" end.
 
     # Game board reset for a new game
     def on_reset(self):
@@ -205,28 +280,32 @@ class GameApp(tk.Tk):
 
         for btn in self.cells.values():
             btn.config(text="", state="normal")
-    # Method "on_reset" ends.
+        # for loop end.
 
-    # Winning combinations for X
-    # XXX 000 000 X00 0X0 00X X00 00X
-    # 000 XXX 000 X00 0X0 00X 0X0 0X0
-    # 000 000 XXX X00 0X0 00X 00X X00
+    # Method "on_reset" end.
 
-    # Winning combinations for 0
-    # 000 XXX XXX 0XX X0X XX0 0XX XX0
-    # XXX 000 XXX 0XX X0X XX0 X0X X0X
-    # XXX XXX 000 0XX X0X XX0 XX0 0XX
+    # Checking current board state if contains winning combination
+    def check_winner(self):
+        # Checking each combination and compair with cells
+        for winning_combination in WINNING_COMBINATIONS:
+            cell1 = self.board[winning_combination[0]]
+            cell2 = self.board[winning_combination[1]]
+            cell3 = self.board[winning_combination[2]]
 
-    # Indexes
-    # 0 1 2
-    # 3 4 5
-    # 6 7 8
+            # All cells must be the same and not equal None
+            if cell1 is not None and cell1 == cell2 and cell1 == cell3:
+                # self.winner = cell1
+                return cell1  # returns Player or Bot symbol
+            # if condition end.
+        # for loop end.
+        return None
 
-    # Winning combinations for indexes
-    # 012, 345, 678, 036, 147, 258, 048, 246
-    #
-    #  TODO:[1]: Need build Method which can check if current combination is successfull!
-    #
+    # Method "check_winner" end.
 
-
-# Class "GameApp" ends.
+    def end_game(self, winner):
+        self.started = False
+        self.winner = winner
+        # TODO:[1]: Show winner User OR Bot
+        # TODO:[1]; show winning message and winner and block board for the next step
+    # Method "end_game" end.
+# Class "GameApp" end.
