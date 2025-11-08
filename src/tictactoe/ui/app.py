@@ -222,9 +222,10 @@ class GameApp(tk.Tk):
     # 3 4 5
     # 6 7 8
 
-    # Winning combinations for indexes TODO:[1]: Finish that
-    # 012
+    # Winning combinations for indexes
+    # 012, 345, 678, 036, 147, 258, 048, 246
     #
+    #  TODO:[1]: Need build Method which can check if current combination is successfull!
     #
 
 
