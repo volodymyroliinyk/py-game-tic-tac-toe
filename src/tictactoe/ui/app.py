@@ -49,6 +49,32 @@ WINNING_COMBINATIONS = [
     (2, 4, 6),
 ]
 
+
+# Smart Bot
+# How to find free cell just around first one?
+# How to find how to find 3rd cell if two nearest already don ?
+# How to fut third X or 0 between two first
+
+# How to predict the next step, second and third steps?
+#  012 0?? ?1? ??2 ..? ?.? .?. ?.? ?.. .?.
+#  345 ??. .?. .?? ??5 .?? .?. ??. 3?? ?4?
+#  678 ?.? .?. ?.? ..? ??8 ?7? 6?? ?.. .?.
+
+# The easiest way to check if each winning combination have combination like
+# None, X, None
+# X, None, None
+# None, None, X
+#
+# None, 0, None
+# 0, None, None
+# None, None, 0
+
+# Need build Method which can check in an array of three elements that it has contains:
+# 1) all three elements are None and stop and output it.
+# 2) one X|0 and two other elements None, in any sequence stop at the first combination and output it
+# 3) two X|0 and one None element, in any sequence stop on it and output it
+
+
 # https://docs.python.org/3.12/library/tkinter.html
 # Window generator here.
 class GameApp(tk.Tk):
@@ -93,7 +119,9 @@ class GameApp(tk.Tk):
 
         # Game start button
         # Button Widget
-        self.start_btn = ttk.Button(choice, text="Start", command=self.on_start)
+        self.start_btn = ttk.Button(choice, text="Start", cв
+        любій
+        послідовностіommand = self.on_start)
         self.start_btn.grid(row=0, column=3, padx=8)
 
         # Game status bar:
@@ -252,7 +280,9 @@ class GameApp(tk.Tk):
         # Find the first free cell
         for index, cell in enumerate(self.board):
             if cell is None:
-                self.board[index] = self.bot
+                self.board[index] = self.botв
+                любій
+                послідовності
 
                 break
             # if condition end.
@@ -303,6 +333,24 @@ class GameApp(tk.Tk):
         return None
 
     # Method "check_winner" end.
+
+    # Must be used just for Bot.
+    def find_potentially_winning_combination(self, symbol_to_check):
+        for winning_combination in WINNING_COMBINATIONS:
+            values = [self.board[index] for index in winning_combination]
+            symbol_count = values.count(symbol_to_check)
+            none_count = values.count(None)
+            if symbol_count == 1 and none_count == 2:
+            # TODO:[1]: Finish this place, need return rundom free index from two
+            elif symbol_count == 2 and none_count == 1:
+                free_index = values.index(None)
+                # Повертаємо глобальний індекс на дошці
+                return winning_combination[free_index]
+            # if condition end.
+        # for loop end.
+        return None
+
+    # Method "find_potentially_winning_combination" end.
 
     def end_game(self, winner):
         self.started = False
