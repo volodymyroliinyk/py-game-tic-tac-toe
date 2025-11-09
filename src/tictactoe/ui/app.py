@@ -340,13 +340,20 @@ class GameApp(tk.Tk):
             values = [self.board[index] for index in winning_combination]
             symbol_count = values.count(symbol_to_check)
             none_count = values.count(None)
-            if symbol_count == 1 and none_count == 2:
-            # TODO:[1]: Finish this place, need return rundom free index from two
-            elif symbol_count == 2 and none_count == 1:
+            if symbol_count == 2 and none_count == 1:
                 free_index = values.index(None)
                 # Повертаємо глобальний індекс на дошці
                 return winning_combination[free_index]
-            # if condition end.
+                if symbol_count == 2 and none_count == 1:
+                free_index = values.index(None)
+                # Повертаємо глобальний індекс на дошці
+                return winning_combination[free_index]
+            elif symbol_count == 1 and none_count == 2:
+            # TODO:[1]: Finish this place, need return random free index from two
+            elif symbol_count == 0 and none_count == 3:
+        # TODO:[1]: Finish this place, need return random free index from three or with index 4
+
+        # if condition end.
         # for loop end.
         return None
 
