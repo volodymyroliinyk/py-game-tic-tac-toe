@@ -58,7 +58,7 @@ class GameApp(tk.Tk):
         # Window settings
         # Widget title
         self.title("Tic Tac Toe Game")
-        self.geometry("600x600")  # window size (width x height)
+        self.geometry("570x680")  # window size (width x height)
         self.resizable(False, False)  # disable resizing (for now)
 
         # --- State ---
@@ -71,7 +71,6 @@ class GameApp(tk.Tk):
         self.bot = "O"  # will update at startup
         self.current = "X"  # who walks now
         self.started = False  # whether they pressed Start
-        self.winner = None
 
 
         # Label Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
@@ -298,7 +297,6 @@ class GameApp(tk.Tk):
 
             # All cells must be the same and not equal None
             if cell1 is not None and cell1 == cell2 and cell1 == cell3:
-                # self.winner = cell1
                 return cell1  # returns Player or Bot symbol
             # if condition end.
         # for loop end.
@@ -308,13 +306,18 @@ class GameApp(tk.Tk):
 
     def end_game(self, winner):
         self.started = False
-        self.winner = winner
 
         if self.bot == winner:
             messageSubstring = "Bot"
         else:
             messageSubstring = "User"
         # if condition end.
+
+        # Status bar update
         self.status_var.set(f"!!!  {messageSubstring} WINS!  !!!")
+
+        # Disabling all buttons on the board
+        for btn in self.cells.values():
+            btn.config(state="disabled")
     # Method "end_game" end.
 # Class "GameApp" end.
