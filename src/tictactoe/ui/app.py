@@ -172,14 +172,12 @@ class GameApp(tk.Tk):
         bottom.pack(pady=6)
         # on_reset method triggering.
         ttk.Button(bottom, text="Reset", command=self.on_reset).pack()
-
     # Method "__init__" end.
 
     # --- Helpers ---
     # Convert to one-dimensional list? return index 0-8
     def idx(self, row, col):
         return row * self.size + col
-
     # Method "idx" end.
 
     # Game board appearance update
@@ -192,7 +190,6 @@ class GameApp(tk.Tk):
                 self.cells[(row, col)].config(text=txt, state=("disabled" if txt else "normal"))
             # for loop end.
         # for loop end.
-
     # Method "render" end.
 
     # --- Events ---
@@ -222,7 +219,6 @@ class GameApp(tk.Tk):
 
         # Change game board state
         self.render()
-
     # Method "on_start" end.
 
     def on_cell_click(self, row, col):
@@ -254,12 +250,10 @@ class GameApp(tk.Tk):
         # Change game board state
         self.render()
 
-        # TODO:[1]: Need to cover case if no winners
+        # TODO:[1]: Need to cover case if no winners.  winner is None and no empty board cells
         # Check winning combination
         winner = self.check_winner()
-        print(f"winner: {winner}")
-        if winner:
-            # debug
+        if winner is not None:
             # Stop game if someone winning
             self.end_game(winner)
             return
@@ -267,7 +261,6 @@ class GameApp(tk.Tk):
 
         # the simplest bot immediately responds
         self.after(150, self.bot_move)
-
     # Method "on_cell_click" end.
 
     # Bot step
@@ -309,15 +302,12 @@ class GameApp(tk.Tk):
         self.render()
 
         # Check winning combination For Bot.
-        # TODO:[1]: Need to cover case if no winners
+        # TODO:[1]: Need to cover case if no winners. winner is None and no empty board cells
         winner = self.check_winner()
-        print(f"winner: {winner}")
-        if winner:
-            print(f"winner: {winner}")  # debug
+        if winner is not None:
             self.end_game(winner)
             return
         # if condition end.
-
     # Method "bot_move" end.
 
     # Game board reset for a new game
@@ -331,7 +321,6 @@ class GameApp(tk.Tk):
         for btn in self.cells.values():
             btn.config(text="", state="normal")
         # for loop end.
-
     # Method "on_reset" end.
 
     # Checking current board state if contains winning combination
@@ -347,8 +336,8 @@ class GameApp(tk.Tk):
                 return cell1  # returns Player or Bot symbol
             # if condition end.
         # for loop end.
-        return None
 
+        return None
     # Method "check_winner" end.
 
     # Must be used just for Bot.
@@ -389,12 +378,12 @@ class GameApp(tk.Tk):
                         return x
                     # if condition end.
                 # for condition end.
+
                 return random.choice(winning_combination)
             # if condition end.
         # for loop end.
-        # if condition end.
-        return None
 
+        return None
     # Method "find_potentially_winning_step" end.
 
     def end_game(self, winner):
