@@ -250,10 +250,11 @@ class GameApp(tk.Tk):
         # Change game board state
         self.render()
 
-        # TODO:[1]: Need to cover case if no winners.  winner is None and no empty board cells
+        # Done:[1]: Need to cover case if no winners.  winner is None and no empty board cells
         # Check winning combination
         winner = self.check_winner()
-        if winner is not None:
+        empty_cell_count = self.board.count(None)
+        if (winner is not None) or (winner is None and empty_cell_count == 0):
             # Stop game if someone winning
             self.end_game(winner)
             return
@@ -270,15 +271,6 @@ class GameApp(tk.Tk):
             return
         # if condition end.
 
-        # # Find the first free cell.
-        # for index, cell in enumerate(self.board):
-        #     if cell is None:
-        #         self.board[index] = self.bot
-        #
-        #         break
-        #     # if condition end.
-        # # for loop end.
-
         # Done:[1]: More smart step here, analyze potentially winning steps
         free_index = self.find_potentially_winning_step()
         print(f"free_index: {free_index}")
@@ -293,8 +285,6 @@ class GameApp(tk.Tk):
             self.board[free_index] = self.bot
         # if condition end.
 
-
-
         self.current = self.human.get()
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
@@ -302,9 +292,10 @@ class GameApp(tk.Tk):
         self.render()
 
         # Check winning combination For Bot.
-        # TODO:[1]: Need to cover case if no winners. winner is None and no empty board cells
+        # Done:[1]: Need to cover case if no winners. winner is None and no empty board cells
         winner = self.check_winner()
-        if winner is not None:
+        empty_cell_count = self.board.count(None)
+        if (winner is not None) or (winner is None and empty_cell_count == 0):
             self.end_game(winner)
             return
         # if condition end.
@@ -340,16 +331,14 @@ class GameApp(tk.Tk):
         return None
     # Method "check_winner" end.
 
-    # Must be used just for Bot.
-    # Done:[1]: provide thia method inside bot_move method
-    # Done:[1]: maybe remobe a second argument because it possible to get from self.
+    # Must be used just for a Bot.
     def find_potentially_winning_step(self):
         # The best is to take the center of the board first for Bot
         if self.board[4] is None:
             return 4
         # if condition end.
 
-        # # Maybe first loop for prevent user's win
+        # First loop for prevent User's win
         # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
@@ -360,6 +349,7 @@ class GameApp(tk.Tk):
                 free_index = values.index(None)
                 return winning_combination[free_index]
 
+        # Second loop for smart bot step
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
             own_symbol_count = values.count(self.bot)
@@ -390,14 +380,17 @@ class GameApp(tk.Tk):
         self.started = False
         self.current = "X"
 
+        message_substring = ""
         if self.bot == winner:
-            messageSubstring = "Bot"
-        else:
-            messageSubstring = "User"
+            message_substring = "Bot WINS"
+        elif self.human.get() == winner:
+            message_substring = "User WINS"
+        elif winner is None:
+            message_substring = "TIE"
         # if condition end.
 
         # Status bar update
-        self.status_var.set(f"!!!  {messageSubstring} WINS!  !!!")
+        self.status_var.set(f"!!!  {message_substring}!  !!!")
 
         # Disabling all buttons on the board
         for btn in self.cells.values():
