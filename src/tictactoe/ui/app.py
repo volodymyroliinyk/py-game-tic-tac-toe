@@ -10,8 +10,8 @@ from tkinter import ttk
 # Done:[1]: Bot first step in a game to empty square.
 # Done:[1]: How to draw X or 0 in the grid cell ?
 # Done:[1]: How to catch event on backend side ?
-# TODO:[1]: Set up successful combination list and allways check if game end or not. And show Green message about Winning.
-# TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
+# Done:[1]: Set up successful combination list and allways check if game end or not. And show Green message about Winning.
+# Done:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # TODO:[1]: No winners mode
 # TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
 # TODO:[1]: ? help icon with instruction how to play this game
