@@ -1,4 +1,5 @@
 # /src/tictactoe/ui/app.py
+import random
 import tkinter as tk
 from tkinter import ttk
 
@@ -119,9 +120,7 @@ class GameApp(tk.Tk):
 
         # Game start button
         # Button Widget
-        self.start_btn = ttk.Button(choice, text="Start", cв
-        любій
-        послідовностіommand = self.on_start)
+        self.start_btn = ttk.Button(choice, text="Start", command=self.on_start)
         self.start_btn.grid(row=0, column=3, padx=8)
 
         # Game status bar:
@@ -280,9 +279,7 @@ class GameApp(tk.Tk):
         # Find the first free cell
         for index, cell in enumerate(self.board):
             if cell is None:
-                self.board[index] = self.botв
-                любій
-                послідовності
+                self.board[index] = self.bot
 
                 break
             # if condition end.
@@ -335,29 +332,37 @@ class GameApp(tk.Tk):
     # Method "check_winner" end.
 
     # Must be used just for Bot.
-    def find_potentially_winning_combination(self, symbol_to_check):
+    # TODO:[1]: provide thia method inside bot_move method
+    def find_potentially_winning_step(self, symbol_to_check):
+        # The best is to take the center of the board first for Bot
+        if self.board[4] is None:
+            return 4
+
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
             symbol_count = values.count(symbol_to_check)
             none_count = values.count(None)
+
             if symbol_count == 2 and none_count == 1:
                 free_index = values.index(None)
-                # Повертаємо глобальний індекс на дошці
-                return winning_combination[free_index]
-                if symbol_count == 2 and none_count == 1:
-                free_index = values.index(None)
-                # Повертаємо глобальний індекс на дошці
                 return winning_combination[free_index]
             elif symbol_count == 1 and none_count == 2:
-            # TODO:[1]: Finish this place, need return random free index from two
+                free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
+                return random.choice(free_indices)
             elif symbol_count == 0 and none_count == 3:
-        # TODO:[1]: Finish this place, need return random free index from three or with index 4
-
-        # if condition end.
+                # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
+                for x in [1, 3, 5, 7]:
+                    if x in winning_combination:
+                        return x
+                    # if condition end.
+                # for condition end.
+                return random.choice(winning_combination)
+            # if condition end.
         # for loop end.
+        # if condition end.
         return None
 
-    # Method "find_potentially_winning_combination" end.
+    # Method "find_potentially_winning_step" end.
 
     def end_game(self, winner):
         self.started = False
