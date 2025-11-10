@@ -276,14 +276,17 @@ class GameApp(tk.Tk):
         # if condition end.
 
         # TODO:[1]: More smart step here, analyze potentially winning steps
-        # Find the first free cell
-        for index, cell in enumerate(self.board):
-            if cell is None:
-                self.board[index] = self.bot
+        # # Find the first free cell.
+        # for index, cell in enumerate(self.board):
+        #     if cell is None:
+        #         self.board[index] = self.bot
+        #
+        #         break
+        #     # if condition end.
+        # # for loop end.
 
-                break
-            # if condition end.
-        # for loop end.
+        free_index = self.find_potentially_winning_step()
+        self.board[free_index] = self.bot
 
         self.current = self.human.get()
         # Game status bar update.
@@ -332,15 +335,17 @@ class GameApp(tk.Tk):
     # Method "check_winner" end.
 
     # Must be used just for Bot.
-    # TODO:[1]: provide thia method inside bot_move method
-    def find_potentially_winning_step(self, symbol_to_check):
+    # Done:[1]: provide thia method inside bot_move method
+    # Done:[1]: maybe remobe a second argument because it possible to get from self.
+    # TODO:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
+    def find_potentially_winning_step(self):
         # The best is to take the center of the board first for Bot
         if self.board[4] is None:
             return 4
 
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
-            symbol_count = values.count(symbol_to_check)
+            symbol_count = values.count(self.bot)
             none_count = values.count(None)
 
             if symbol_count == 2 and none_count == 1:
