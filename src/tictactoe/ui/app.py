@@ -12,12 +12,12 @@ from tkinter import ttk
 # Done:[1]: How to catch event on backend side ?
 # TODO:[1]: Set up successful combination list and allways check if game end or not. And show Green message about Winning.
 # TODO:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
-# TODO:[2]: Replace X and 0 with SVG images.
+# TODO:[1]: No winners mode
 # TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
 # TODO:[1]: ? help icon with instruction how to play this game
 # TODO:[1]: Mac OS runner (without installation).
-# TODO:[1]: Windows OS runner (without installation).
-# TODO:[1]: Ubuntu OS runner (without installation).
+# TODO:[2]: Replace X and 0 with SVG images.
+
 
 # Winning combinations for X
 # XXX 000 000 X00 0X0 00X X00 00X
@@ -254,10 +254,12 @@ class GameApp(tk.Tk):
         # Change game board state
         self.render()
 
+        # TODO:[1]: Need to cover case if no winners
         # Check winning combination
         winner = self.check_winner()
+        print(f"winner: {winner}")
         if winner:
-            print(f"winner: {winner}")  # debug
+            # debug
             # Stop game if someone winning
             self.end_game(winner)
             return
@@ -275,7 +277,6 @@ class GameApp(tk.Tk):
             return
         # if condition end.
 
-        # TODO:[1]: More smart step here, analyze potentially winning steps
         # # Find the first free cell.
         # for index, cell in enumerate(self.board):
         #     if cell is None:
@@ -285,8 +286,21 @@ class GameApp(tk.Tk):
         #     # if condition end.
         # # for loop end.
 
+        # Done:[1]: More smart step here, analyze potentially winning steps
         free_index = self.find_potentially_winning_step()
-        self.board[free_index] = self.bot
+        print(f"free_index: {free_index}")
+        if free_index is None:
+            for index, cell in enumerate(self.board):
+                if cell is None:
+                    self.board[index] = self.bot
+                    break
+                # if condition end.
+            # for loop end.
+        else:
+            self.board[free_index] = self.bot
+        # if condition end.
+
+
 
         self.current = self.human.get()
         # Game status bar update.
@@ -295,7 +309,9 @@ class GameApp(tk.Tk):
         self.render()
 
         # Check winning combination For Bot.
+        # TODO:[1]: Need to cover case if no winners
         winner = self.check_winner()
+        print(f"winner: {winner}")
         if winner:
             print(f"winner: {winner}")  # debug
             self.end_game(winner)
@@ -309,6 +325,7 @@ class GameApp(tk.Tk):
         self.board = [None] * (self.size * self.size)
         self.started = False
         self.current = "X"
+        self.bot = "O"
         self.status_var.set("Select X or O and press Start")
 
         for btn in self.cells.values():
@@ -337,24 +354,35 @@ class GameApp(tk.Tk):
     # Must be used just for Bot.
     # Done:[1]: provide thia method inside bot_move method
     # Done:[1]: maybe remobe a second argument because it possible to get from self.
-    # TODO:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
     def find_potentially_winning_step(self):
         # The best is to take the center of the board first for Bot
         if self.board[4] is None:
             return 4
+        # if condition end.
+
+        # # Maybe first loop for prevent user's win
+        # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
+        for winning_combination in WINNING_COMBINATIONS:
+            values = [self.board[index] for index in winning_combination]
+            none_count = values.count(None)
+            human_symbol_count = values.count(self.human.get())  # for prevent user's win
+            #
+            if human_symbol_count == 2 and none_count == 1:
+                free_index = values.index(None)
+                return winning_combination[free_index]
 
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
-            symbol_count = values.count(self.bot)
+            own_symbol_count = values.count(self.bot)
             none_count = values.count(None)
 
-            if symbol_count == 2 and none_count == 1:
+            if own_symbol_count == 2 and none_count == 1:
                 free_index = values.index(None)
                 return winning_combination[free_index]
-            elif symbol_count == 1 and none_count == 2:
+            elif own_symbol_count == 1 and none_count == 2:
                 free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
                 return random.choice(free_indices)
-            elif symbol_count == 0 and none_count == 3:
+            elif own_symbol_count == 0 and none_count == 3:
                 # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
                 for x in [1, 3, 5, 7]:
                     if x in winning_combination:
@@ -371,6 +399,7 @@ class GameApp(tk.Tk):
 
     def end_game(self, winner):
         self.started = False
+        self.current = "X"
 
         if self.bot == winner:
             messageSubstring = "Bot"
@@ -384,5 +413,6 @@ class GameApp(tk.Tk):
         # Disabling all buttons on the board
         for btn in self.cells.values():
             btn.config(state="disabled")
+        # for loop end.
     # Method "end_game" end.
 # Class "GameApp" end.
