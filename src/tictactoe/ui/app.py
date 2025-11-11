@@ -4,6 +4,12 @@ import random
 import tkinter as tk
 from tkinter import ttk
 from .menu import create_menubar
+from ..core.bot_strategy import BotStrategyMixin
+from ..core.game_logic import GameLogicMixin
+
+
+# from .core.game_logic import GameLogicMixin
+# from .core.bot_strategy import BotStrategyMixin
 
 # Done:[1]: Render 3x3 grid for buttons.
 # Done:[1]: Live User choosing X or 0 before first step in a game.
@@ -24,66 +30,9 @@ from .menu import create_menubar
 # TODO:[2]: Multilingual support?
 
 
-# Winning combinations for X
-# XXX 000 000 X00 0X0 00X X00 00X
-# 000 XXX 000 X00 0X0 00X 0X0 0X0
-# 000 000 XXX X00 0X0 00X 00X X00
-
-# Winning combinations for 0
-# 000 XXX XXX 0XX X0X XX0 0XX XX0
-# XXX 000 XXX 0XX X0X XX0 X0X X0X
-# XXX XXX 000 0XX X0X XX0 XX0 0XX
-
-# Indexes
-#  0 1 2
-#  3 4 5
-#  6 7 8
-
-# Winning combinations for indexes
-# 012, 345, 678, 036, 147, 258, 048, 246
-#
-#  Done:[1]: Need build Method which can check if current combination is successful!
-#
-WINNING_COMBINATIONS = [
-    (0, 1, 2),
-    (3, 4, 5),
-    (6, 7, 8),
-    (0, 3, 6),
-    (1, 4, 7),
-    (2, 5, 8),
-    (0, 4, 8),
-    (2, 4, 6),
-]
-
-
-# Smart Bot
-# How to find free cell just around first one?
-# How to find how to find 3rd cell if two nearest already don ?
-# How to fut third X or 0 between two first
-
-# How to predict the next step, second and third steps?
-#  012 0?? ?1? ??2 ..? ?.? .?. ?.? ?.. .?.
-#  345 ??. .?. .?? ??5 .?? .?. ??. 3?? ?4?
-#  678 ?.? .?. ?.? ..? ??8 ?7? 6?? ?.. .?.
-
-# The easiest way to check if each winning combination have combination like
-# None, X, None
-# X, None, None
-# None, None, X
-#
-# None, 0, None
-# 0, None, None
-# None, None, 0
-
-# Need build Method which can check in an array of three elements that it has contains:
-# 1) all three elements are None and stop and output it.
-# 2) one X|0 and two other elements None, in any sequence stop at the first combination and output it
-# 3) two X|0 and one None element, in any sequence stop on it and output it
-
-
 # https://docs.python.org/3.12/library/tkinter.html
 # Window generator here.
-class GameApp(tk.Tk):
+class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
     def __init__(self):
         super().__init__()
 
@@ -183,10 +132,6 @@ class GameApp(tk.Tk):
     # Method "__init__" end.
 
     # --- Helpers ---
-    # Convert to one-dimensional list? return index 0-8
-    def idx(self, row, col):
-        return row * self.size + col
-    # Method "idx" end.
 
     # Game board appearance update
     def render(self):
@@ -322,72 +267,6 @@ class GameApp(tk.Tk):
         # for loop end.
     # Method "on_reset" end.
 
-    # Checking current board state if contains winning combination
-    def check_winner(self):
-        # Checking each combination and compair with cells
-        for winning_combination in WINNING_COMBINATIONS:
-            cell1 = self.board[winning_combination[0]]
-            cell2 = self.board[winning_combination[1]]
-            cell3 = self.board[winning_combination[2]]
-
-            # All cells must be the same and not equal None
-            if cell1 is not None and cell1 == cell2 and cell1 == cell3:
-                return cell1  # returns Player or Bot symbol
-            # if condition end.
-        # for loop end.
-
-        return None
-    # Method "check_winner" end.
-
-    # Must be used just for a Bot.
-    def find_potentially_winning_step(self):
-        # The best is to take the center of the board first for Bot
-        if self.board[4] is None:
-            return 4
-        # if condition end.
-
-        # First loop for prevent User's win
-        # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
-        for winning_combination in WINNING_COMBINATIONS:
-            values = [self.board[index] for index in winning_combination]
-            none_count = values.count(None)
-            human_symbol_count = values.count(self.human.get())  # for prevent user's win
-            #
-            if human_symbol_count == 2 and none_count == 1:
-                free_index = values.index(None)
-                return winning_combination[free_index]
-            # if condition end.
-        # for loop end.
-
-        # TODO:[1]: Need to implement tricky triangle strategy.
-
-        # Second loop for smart bot step
-        for winning_combination in WINNING_COMBINATIONS:
-            values = [self.board[index] for index in winning_combination]
-            own_symbol_count = values.count(self.bot)
-            none_count = values.count(None)
-
-            if own_symbol_count == 2 and none_count == 1:
-                free_index = values.index(None)
-                return winning_combination[free_index]
-            elif own_symbol_count == 1 and none_count == 2:
-                free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
-                return random.choice(free_indices)
-            elif own_symbol_count == 0 and none_count == 3:
-                # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
-                for x in [1, 3, 5, 7]:
-                    if x in winning_combination:
-                        return x
-                    # if condition end.
-                # for condition end.
-
-                return random.choice(winning_combination)
-            # if condition end.
-        # for loop end.
-
-        return None
-    # Method "find_potentially_winning_step" end.
-
     def end_game(self, winner):
         self.started = False
         self.current = "X"
@@ -409,7 +288,5 @@ class GameApp(tk.Tk):
             btn.config(state="disabled")
         # for loop end.
     # Method "end_game" end.
-
-
 
 # Class "GameApp" end.
