@@ -1,0 +1,23 @@
+py-game-tic-tac-toe/
+├── assets/
+│   ├── images/
+├── src/
+│   ├── __pycache__/
+│   │   └── main.cpython-312.pyc
+│   ├── tictactoe/
+│   │   ├── __pycache__/
+│   │   │   └── __init__.cpython-312.pyc
+│   │   ├── core/
+│   │   ├── ui/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   └── app.cpython-312.pyc
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   └── menu.py
+│   │   └── __init__.py
+│   └── main.py
+├── LICENSE
+├── README.md
+├── directory-tree.txt
+└── pyproject.toml
