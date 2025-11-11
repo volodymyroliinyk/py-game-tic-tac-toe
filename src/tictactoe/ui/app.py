@@ -355,6 +355,8 @@ class GameApp(tk.Tk):
                 free_index = values.index(None)
                 return winning_combination[free_index]
 
+        # TODO:[1]: Need to implement tricky triangle strategy.
+
         # Second loop for smart bot step
         for winning_combination in WINNING_COMBINATIONS:
             values = [self.board[index] for index in winning_combination]
@@ -482,7 +484,7 @@ class GameApp(tk.Tk):
             text.pack(expand=True, fill="both")
             content = (
                 "Tic Tac Toe Game\n"
-                "Author: Volodymyr Oliinyk\n"
+                "Developer: Volodymyr Oliinyk\n"
                 "License: MIT\n"
             )
             text.insert("1.0", content)
@@ -499,6 +501,8 @@ class GameApp(tk.Tk):
             ttk.Button(top, text="OK", command=top.destroy).pack(pady=8)
 
         self._open_modal_centered("About", 400, 300, build)
+
+    # Method "on_about" end.
 
     def _open_modal_centered(self, title: str, width: int, height: int, build_body_fn):
         top = tk.Toplevel(self)
@@ -523,5 +527,6 @@ class GameApp(tk.Tk):
         top.protocol("WM_DELETE_WINDOW", top.destroy)
 
         return top
+    # Method "_open_modal_centered" end.
 
 # Class "GameApp" end.
