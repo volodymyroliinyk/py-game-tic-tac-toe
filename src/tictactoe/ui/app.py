@@ -14,11 +14,12 @@ from .menu import create_menubar
 # Done:[1]: Set up successful combination list and allways check if game end or not. And show Green message about Winning.
 # Done:[1]: How to make Bot more smart, and add bot symbol 0 or X in the end of any line like XX0 or 00X?
 # Done:[1]: No winners mode
-# TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
-# TODO:[1]: ? help icon with instruction how to play this game
-# TODO:[1]: Mac OS runner (without installation).
-# TODO:[1]: Menu About, Help.
+# Done:[1]: Menu About, Help.
+# Done:[1]: ? help icon with instruction how to play this game
 
+# TODO:[1]: Game logic separate to sub files.
+# TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
+# TODO:[1]: Mac OS runner (without installation).
 # TODO:[2]: Replace X and 0 with SVG images.
 # TODO:[2]: Multilingual support?
 
