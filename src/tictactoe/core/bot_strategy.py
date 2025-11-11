@@ -36,10 +36,10 @@
 #  678 6.? ?.? ?.8 6?8
 
 TRICKY_TRIANGLE_COMBINATIONS = [
-    (0, 4, 6),  # Need to check if free: 2,3,8
-    (0, 4, 2),  # Need to check if free: 1,6,8
-    (2, 4, 8),  # Need to check if free: 0,5,6
-    (6, 6, 8),  # Need to check if free: 0,2,7
+    (0, 4, 6),  # Need to check if is free: 2,3,8
+    (0, 4, 2),  # Need to check if is free: 1,6,8
+    (2, 4, 8),  # Need to check if is free: 0,5,6
+    (6, 4, 8),  # Need to check if is free: 0,2,7
 ]
 
 import random
