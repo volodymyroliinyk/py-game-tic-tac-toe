@@ -30,20 +30,32 @@
 # 2) one X|0 and two other elements None, in any sequence stop at the first combination and output it
 # 3) two X|0 and one None element, in any sequence stop on it and output it
 
+
+import random
+from .game_logic import WINNING_COMBINATIONS
+
 # Tricky triangle strategy
 #  012 0.? 0?2 ?.2 ?.?
 #  345 ?4. .4. .4? .4.
 #  678 6.? ?.? ?.8 6?8
 
-TRICKY_TRIANGLE_COMBINATIONS = [
-    (0, 4, 6),  # Need to check if is free: 2,3,8
-    (0, 4, 2),  # Need to check if is free: 1,6,8
-    (2, 4, 8),  # Need to check if is free: 0,5,6
-    (6, 4, 8),  # Need to check if is free: 0,2,7
-]
+# WINNING_COMBINATIONS = [
+#     (0, 1, 2),
+#     (3, 4, 5),
+#     (6, 7, 8),
+#     (0, 3, 6),
+#     (1, 4, 7),
+#     (2, 5, 8),
+#     (0, 4, 8),
+#     (2, 4, 6),
+# ]
 
-import random
-from .game_logic import WINNING_COMBINATIONS
+TRICKY_TRIANGLE_COMBINATIONS = [
+    (0, 4, 6),  # Need to check if is free: 2,3,8 | Winning lines for this triangle: 048 OR 246 OR 036
+    (0, 4, 2),  # Need to check if is free: 1,6,8 | Winning lines for this triangle: 048 OR 246 OR 042
+    (2, 4, 8),  # Need to check if is free: 0,5,6 | Winning lines for this triangle: 048 OR 246 OR 258
+    (6, 4, 8),  # Need to check if is free: 0,2,7 | Winning lines for this triangle: 048 OR 246 OR 678
+]
 
 
 class BotStrategyMixin:
