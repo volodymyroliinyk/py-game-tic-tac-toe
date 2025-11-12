@@ -65,6 +65,15 @@ TRICKY_TRIANGLE_COMBINATIONS = [
 ]
 
 
+# TODO:[1]:
+#  Manual and automated testing strategies:
+#  Cases:
+#  1) Bot in the center
+#  2) User in the center
+#  3) Need to test how smart the bot is in its quest to win.
+#  4) Need to test how smart the bot is to prevent the user from winning.
+#  5) Need to test how smart the bot is to balance between 3 and 4.
+
 class BotStrategyMixin:
     # Must be used just for a Bot.
     def find_potentially_winning_step(self):
