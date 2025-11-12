@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-# TODO:[1]: Separate menu to another py file.
+# Done:[1]: Separate menu to another py file.
 def create_menubar(self):
     menubar = tk.Menu(self, tearoff=0, borderwidth=0, activeborderwidth=0)
     # --- Help menu ---

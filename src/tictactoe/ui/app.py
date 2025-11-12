@@ -22,8 +22,8 @@ from ..core.game_logic import GameLogicMixin
 # Done:[1]: No winners mode
 # Done:[1]: Menu About, Help.
 # Done:[1]: ? help icon with instruction how to play this game
+# Done:[1]: Game logic separate to sub files.
 
-# TODO:[1]: Game logic separate to sub files.
 # TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
 # TODO:[1]: Mac OS runner (without installation).
 # TODO:[2]: Replace X and 0 with SVG images.
