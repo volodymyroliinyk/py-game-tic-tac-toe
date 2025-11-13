@@ -6,7 +6,8 @@ from tkinter import ttk
 from .menu import create_menubar
 from ..core.bot_strategy import BotStrategyMixin
 from ..core.game_logic import GameLogicMixin
-
+from ..core.constants import CROSS_SYMBOL
+from ..core.constants import NOUGHT_SYMBOL
 
 # from .core.game_logic import GameLogicMixin
 # from .core.bot_strategy import BotStrategyMixin
@@ -48,9 +49,9 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # Indexes:   [0,    1,    2,    3,    4,    5,    6,    7,    8]
         self.board = [None] * (self.size * self.size)  # [None|"X"|"O"]
         # default value is "", in our case "X"
-        self.human = tk.StringVar(value="X")  # Choosing a person before the start
-        self.bot = "O"  # will update at startup
-        self.current = "X"  # who walks now
+        self.human = tk.StringVar(value=CROSS_SYMBOL)  # Choosing a person before the start
+        self.bot = NOUGHT_SYMBOL  # will update at startup
+        self.current = CROSS_SYMBOL  # who walks now
         self.started = False  # whether they pressed Start
 
 
@@ -69,8 +70,10 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
         # Label Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
         ttk.Label(choice, text="Play as:").grid(row=0, column=0, padx=4)
-        ttk.Radiobutton(choice, text="X", variable=self.human, value="X").grid(row=0, column=1, padx=4)
-        ttk.Radiobutton(choice, text="O", variable=self.human, value="O").grid(row=0, column=2, padx=4)
+        ttk.Radiobutton(choice, text=CROSS_SYMBOL, variable=self.human, value=CROSS_SYMBOL).grid(row=0, column=1,
+                                                                                                 padx=4)
+        ttk.Radiobutton(choice, text=NOUGHT_SYMBOL, variable=self.human, value=NOUGHT_SYMBOL).grid(row=0, column=2,
+                                                                                                   padx=4)
 
         # Game start button
         # Button Widget
@@ -156,17 +159,17 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # Game started status
         self.started = True
 
-        if self.human.get() == "X":
-            self.bot = "O"
+        if self.human.get() == CROSS_SYMBOL:
+            self.bot = NOUGHT_SYMBOL
         else:
-            self.bot = "X"
+            self.bot = CROSS_SYMBOL
 
-        self.current = "X"
+        self.current = CROSS_SYMBOL
         # Game status bar update.
         self.status_var.set(f"You: {self.human.get()}  |  Bot: {self.bot}  |  Turn: {self.current}")
 
         # If the person has chosen "O", the bot walks first
-        if self.human.get() == "O":
+        if self.human.get() == NOUGHT_SYMBOL:
             self.bot_move()
         # if condition end.
 
@@ -175,8 +178,8 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
     # Method "on_start" end.
 
     def on_cell_click(self, row, col):
-        print(f"CLICKED: row={row}, col={col}")  # debug
-        print(f"BOARD before move: {self.board}")  # debug
+        # print(f"CLICKED: row={row}, col={col}")  # debug
+        # print(f"BOARD before move: {self.board}")  # debug
 
         # First you need to start
         if not self.started:
@@ -195,7 +198,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # if condition end.
 
         self.board[index] = self.human.get()
-        print(f"BOARD after move: {self.board}")  #debug
+        # print(f"BOARD after move: {self.board}")  #debug
 
         self.current = self.bot
         # Game status bar update.
@@ -226,7 +229,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
         # Done:[1]: More smart step here, analyze potentially winning steps
         free_index = self.find_potentially_winning_step()
-        print(f"free_index: {free_index}")
+        # print(f"free_index: {free_index}")
         if free_index is None:
             for index, cell in enumerate(self.board):
                 if cell is None:
@@ -258,8 +261,8 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
     def on_reset(self):
         self.board = [None] * (self.size * self.size)
         self.started = False
-        self.current = "X"
-        self.bot = "O"
+        self.current = CROSS_SYMBOL
+        self.bot = NOUGHT_SYMBOL
         self.status_var.set("Select X or O and press Start")
 
         for btn in self.cells.values():
@@ -269,7 +272,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
     def end_game(self, winner):
         self.started = False
-        self.current = "X"
+        self.current = CROSS_SYMBOL
 
         message_substring = ""
         if self.bot == winner:

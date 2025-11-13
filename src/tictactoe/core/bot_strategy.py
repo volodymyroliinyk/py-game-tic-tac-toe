@@ -57,22 +57,18 @@ from .game_logic import WINNING_COMBINATIONS
 # 4) Take the first free angle cell related to one of the TRIANGLEs
 # 5) Last step is already provided by existing logic.
 
-TRICKY_TRIANGLE_COMBINATIONS = [
-    (0, 4, 6),  # Need to check if is free: 2,3,8 | Winning lines for this triangle: 048 OR 246 OR 036
-    (0, 4, 2),  # Need to check if is free: 1,6,8 | Winning lines for this triangle: 048 OR 246 OR 012
-    (2, 4, 8),  # Need to check if is free: 0,5,6 | Winning lines for this triangle: 048 OR 246 OR 258
-    (6, 4, 8),  # Need to check if is free: 0,2,7 | Winning lines for this triangle: 048 OR 246 OR 678
-]
 
 
 # TODO:[1]:
 #  Manual and automated testing strategies:
 #  Cases:
-#  1) Bot in the center
-#  2) User in the center
+#  1) Bot in the center [Issue with preventing user winning]
+#  2) User in the center [Issue with preventing user winning]
 #  3) Need to test how smart the bot is in its quest to win.
 #  4) Need to test how smart the bot is to prevent the user from winning.
 #  5) Need to test how smart the bot is to balance between 3 and 4.
+
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS
 
 class BotStrategyMixin:
     # Must be used just for a Bot.
@@ -87,7 +83,19 @@ class BotStrategyMixin:
 
         # TODO:[1]: Fix Priority between "Tricky triangle strategy, step 2." AND "First loop for prevent User's win" :)
 
-        # Done:[1]: Need to implement tricky triangle strategy.
+        # First loop for prevent User's win
+        # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
+        for winning_combination in WINNING_COMBINATIONS:
+            values = [self.board[index] for index in winning_combination]
+            none_count = values.count(None)
+            human_symbol_count = values.count(self.human.get())  # for prevent user's win
+            #
+            if human_symbol_count == 2 and none_count == 1:
+                free_index = values.index(None)
+                print("BOT STEP: 2")  # debug
+                return winning_combination[free_index]
+            # if condition end.
+        # for loop end.
 
         # Play with that TRICKY_TRIANGLE_COMBINATIONS
         if self.board[4] is self.bot:
@@ -117,20 +125,6 @@ class BotStrategyMixin:
                 if self.board[c] is self.bot and self.board[a] is None:
                     print("BOT STEP: 3 (triangle c->a)")  # debug
                     return a
-                # if condition end.
-            # for loop end.
-
-            # First loop for prevent User's win
-            # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
-            for winning_combination in WINNING_COMBINATIONS:
-                values = [self.board[index] for index in winning_combination]
-                none_count = values.count(None)
-                human_symbol_count = values.count(self.human.get())  # for prevent user's win
-                #
-                if human_symbol_count == 2 and none_count == 1:
-                    free_index = values.index(None)
-                    print("BOT STEP: 2")  # debug
-                    return winning_combination[free_index]
                 # if condition end.
             # for loop end.
 
