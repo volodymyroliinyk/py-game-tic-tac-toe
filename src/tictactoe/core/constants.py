@@ -1,3 +1,5 @@
+# /src/tictactoe/core/constants.py
+
 # TODO:[1]: use images instead of symbols.
 CROSS_SYMBOL = "X"
 NOUGHT_SYMBOL = "O"
