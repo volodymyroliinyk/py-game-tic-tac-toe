@@ -268,6 +268,9 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         for btn in self.cells.values():
             btn.config(text="", state="normal")
         # for loop end.
+
+        # Re-enable Start button
+        self.start_btn.config(state="normal")
     # Method "on_reset" end.
 
     def end_game(self, winner):
@@ -290,6 +293,9 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         for btn in self.cells.values():
             btn.config(state="disabled")
         # for loop end.
+
+        # Disable Start button
+        self.start_btn.config(state="disabled")
     # Method "end_game" end.
 
 # Class "GameApp" end.
