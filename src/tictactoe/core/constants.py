@@ -2,6 +2,15 @@
 CROSS_SYMBOL = "X"
 NOUGHT_SYMBOL = "O"
 
+# TODO:[1]: need to find normal images.
+# Regular images.
+CROSS_IMG_BLACK = "assets/images/CROSS_BLACK.png"
+NOUGHT_IMG_BLACK = "assets/images/NOUGHT_BLACK.png"
+
+# Winning images.
+CROSS_IMG_GREEN = "assets/images/CROSS_GREEN.png"
+NOUGHT_IMG_GREEN = "assets/images/NOUGHT_GREEN.png"
+
 # Just all possible winning combinations.
 WINNING_COMBINATIONS = [
     (0, 1, 2),
