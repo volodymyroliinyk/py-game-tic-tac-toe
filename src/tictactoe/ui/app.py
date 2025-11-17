@@ -98,7 +98,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
             table.grid_rowconfigure(index, weight=1, uniform="grid")
             # Doc https://www.tcl-lang.org/man/tcl8.6/TkCmd/grid.htm#M24 #grid columnconfigure
             table.grid_columnconfigure(index, weight=1, uniform="grid")
-        # for loop end.
+        # Loop "for" end.
 
         # Create 3×3 buttons
         self.cells = {}
@@ -119,8 +119,8 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
                 #  It takes a string combining compass directions (e.g., "n", "s", "e", "w", "ns", "ew", "nsew").
                 btn.grid(row=row, column=col, sticky="nsew", padx=4, pady=4)
                 self.cells[(row, col)] = btn
-            # for loop end.
-        # for loop end.
+            # Loop "for" end.
+        # Loop "for" end.
 
         # --- Reset ---
         # Frame Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
@@ -144,8 +144,8 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
                 index = self.idx(row, col)
                 txt = self.board[index] or ""
                 self.cells[(row, col)].config(text=txt, state=("disabled" if txt else "normal"))
-            # for loop end.
-        # for loop end.
+            # Loop "for" end.
+        # Loop "for" end.
     # Method "render" end.
 
     # --- Events ---
@@ -154,7 +154,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # Exit from method if already started
         if self.started:
             return
-        # if condition end.
+        # Condition "if" end.
 
         # Game started status
         self.started = True
@@ -172,7 +172,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # If the person has chosen "O", the bot walks first
         if self.human.get() == NOUGHT_SYMBOL:
             self.bot_move()
-        # if condition end.
+        # Condition "if" end.
 
         # Change game board state
         self.render()
@@ -185,18 +185,18 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # First you need to start
         if not self.started:
             return
-        # if condition end.
+        # Condition "if" end.
 
         # Skip if cell is already busy
         index = self.idx(row, col)
         if self.board[index] is not None:
             return
-        # if condition end.
+        # Condition "if" end.
 
         # Allow a person's move only when it is his turn
         if self.current != self.human.get():
             return
-        # if condition end.
+        # Condition "if" end.
 
         self.board[index] = self.human.get()
         # print(f"BOARD after move: {self.board}")  #debug
@@ -215,7 +215,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
             # Stop game if someone winning
             self.end_game(winner)
             return
-        # if condition end.
+        # Condition "if" end.
 
         # the simplest bot immediately responds
         self.after(150, self.bot_move)
@@ -223,10 +223,12 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
     # Bot step
     def bot_move(self):
+        print("bot_move ------------------------------------------")
+
         # If the game hasn't started or it's not the bot's turn now, we don't do anything
         if not self.started or self.current != self.bot:
             return
-        # if condition end.
+        # Condition "if" end.
 
         # Done:[1]: More smart step here, analyze potentially winning steps
         free_index = self.find_potentially_winning_step()
@@ -236,11 +238,11 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
                 if cell is None:
                     self.board[index] = self.bot
                     break
-                # if condition end.
-            # for loop end.
+                # Condition "if" end.
+            # Loop "for" end.
         else:
             self.board[free_index] = self.bot
-        # if condition end.
+        # Condition "if" end.
 
         self.current = self.human.get()
         # Game status bar update.
@@ -255,7 +257,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         if (winner is not None) or (winner is None and empty_cell_count == 0):
             self.end_game(winner)
             return
-        # if condition end.
+        # Condition "if" end.
     # Method "bot_move" end.
 
     # Game board reset for a new game
@@ -268,7 +270,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
         for btn in self.cells.values():
             btn.config(text="", state="normal")
-        # for loop end.
+        # Loop "for" end.
 
         # Re-enable Start button
         self.start_btn.config(state="normal")
@@ -285,7 +287,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
             message_substring = "User WINS"
         elif winner is None:
             message_substring = "TIE"
-        # if condition end.
+        # Condition "if" end.
 
         # Status bar update
         self.status_var.set(f"!!!  {message_substring}!  !!!")
@@ -293,7 +295,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         # Disabling all buttons on the board
         for btn in self.cells.values():
             btn.config(state="disabled")
-        # for loop end.
+        # Loop "for" end.
 
         # Disable Start button
         self.start_btn.config(state="disabled")

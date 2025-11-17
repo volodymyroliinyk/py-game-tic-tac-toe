@@ -45,6 +45,18 @@ WINNING_COMBINATIONS = [
     (2, 4, 6),
 ]
 
+# Tricky triangle strategy steps:
+# 1) This strategy can be successful if the Bot has already taken a center [4]
+# 2) After [4] need to find a free one from the four angle cells [0],[2],[6],[8]
+# 3) Find TRIANGLEs which are related to [4][0] OR [4][2] OR [4][6] OR [4][8]
+# 4) Take the first free angle cell related to one of the TRIANGLEs
+# 5) Last step is already provided by existing logic.
+
+# Tricky triangle strategy:
+#  012 0.? 0?2 ?.2 ?.?
+#  345 ?4. .4. .4? .4.
+#  678 6.? ?.? ?.8 6?8
+
 # CORNER in (0, 2, 6, 8)
 # Especial combination which can help to winn 100%. Big triangles.
 TRICKY_TRIANGLE_COMBINATIONS_BIG = [
@@ -91,7 +103,7 @@ TRIANGLE_TO_LINES_SMALL = {
     (0, 4, 3): [(3, 4, 5), (0, 3, 6), (0, 4, 8)],
 }
 
-# TODO:[1] I found one more TRICKY_TRIANGLE_COMBINATIONS, need to implement for bot strategies, but if bot not occupied board center, bot can win!
+# Done: I found one more TRICKY_TRIANGLE_COMBINATIONS, need to implement for bot strategies, but if bot not occupied board center, bot can win!
 # example
 # 1:O 2:X X
 # 3:O 1:X
@@ -117,3 +129,5 @@ TRIANGLE_TO_LINES_CORNER = {
     (0, 2, 5): [(0, 1, 2), (2, 5, 8)],
     (6, 8, 5): [(2, 5, 8), (6, 7, 8)],
 }
+
+CORNERS = (0, 2, 6, 8)

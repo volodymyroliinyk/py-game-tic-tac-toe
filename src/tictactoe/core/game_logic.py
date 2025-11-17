@@ -26,9 +26,9 @@ class GameLogicMixin:
 
             # All cells must be the same and not equal None.
             if cell1 is not None and cell1 == cell2 and cell1 == cell3:
-                return cell1  # returns Player or Bot symbol.
-            # if condition end.
-        # for loop end.
+                return cell1  # Returns Player or Bot symbol.
+            # Condition "if" end.
+        # Loop "for" end.
 
         return None
     # Method "check_winner" end.
@@ -39,7 +39,7 @@ class GameLogicMixin:
             opponent = NOUGHT_SYMBOL
         else:
             opponent = CROSS_SYMBOL
-        # if condition end.
+        # Condition "if" end.
 
         free_lines = []
 
@@ -50,13 +50,16 @@ class GameLogicMixin:
             # If there is an opponent in a line, the line is busy.
             if opponent in tri_cells:
                 continue
-            # if condition end.
+            # Condition "if" end.
 
-            free_lines.append(winning_combination)
-        # for loop end.
+            free_lines.append((winning_combination, tri_cells))
+        # Loop "for" end.
 
-        return free_lines
+        # Sorting, combinations with a less None on the start.
+        free_lines.sort(key=lambda item: item[1].count(None))
 
+        # We return only combinations, without tri_cells.
+        return [combo for combo, _ in free_lines]
     #  Method "get_free_winning_combinations" end.
 
     # Returns all triangles that can still be used to create a fork:
@@ -67,7 +70,7 @@ class GameLogicMixin:
             opponent = NOUGHT_SYMBOL
         else:
             opponent = CROSS_SYMBOL
-        # if condition end.
+        # Condition "if" end.
 
         # Take all free winning lines for symbol.
         free_lines = set(self.get_free_winning_combinations(symbol))
@@ -81,7 +84,7 @@ class GameLogicMixin:
             # If there is an opponent in a triangle, the triangle is busy.
             if opponent in tri_cells:
                 continue
-            # if condition end.
+            # Condition "if" end.
 
             # Check all its related lines.
             related_lines = TRIANGLE_TO_LINES_BIG.get(triangle, [])
@@ -89,11 +92,10 @@ class GameLogicMixin:
             # All three lines must be free.
             if all(line in free_lines for line in related_lines):
                 valid_triangles.append(triangle)
-            # if condition end.
-        # for loop end.
+            # Condition "if" end.
+        # Loop "for" end.
 
         return valid_triangles
-
     #  Method "get_free_tricky_triangles_big" end.
 
     def get_free_tricky_triangles_small(self, symbol):
@@ -101,7 +103,7 @@ class GameLogicMixin:
             opponent = NOUGHT_SYMBOL
         else:
             opponent = CROSS_SYMBOL
-        # if condition end.
+        # Condition "if" end.
 
         # Take all free paylines as a set.
         free_lines = set(self.get_free_winning_combinations(symbol))
@@ -115,7 +117,7 @@ class GameLogicMixin:
             # If there is an opponent in the triangle itself -> he is busy.
             if opponent in tri_cells:
                 continue
-            # if condition end.
+            # Condition "if" end.
 
             # Take a list of related lines.
             related_lines = TRIANGLE_TO_LINES_SMALL.get(triangle, [])
@@ -123,8 +125,8 @@ class GameLogicMixin:
             # These two lines must be free.
             if all(line in free_lines for line in related_lines):
                 valid_triangles.append(triangle)
-            # if condition end.
-        # for loop end.
+            # Condition "if" end.
+        # Loop "for" end.
 
         return valid_triangles
     #  Method "get_free_tricky_triangles_small" end.
@@ -138,7 +140,7 @@ class GameLogicMixin:
             opponent = NOUGHT_SYMBOL
         else:
             opponent = CROSS_SYMBOL
-        # if condition end.
+        # Condition "if" end.
 
         # We take all free paylines for the symbol.
         free_lines = set(self.get_free_winning_combinations(symbol))
@@ -152,7 +154,7 @@ class GameLogicMixin:
             # If there is already an opponent's figure in the triangle, the triangle is dead.
             if opponent in tri_cells:
                 continue
-            # if condition end.
+            # Condition "if" end.
 
             # Two paylines are linked.
             related_lines = TRIANGLE_TO_LINES_CORNER.get(triangle, [])
@@ -160,8 +162,8 @@ class GameLogicMixin:
             # Both lines must be free (no opponent).
             if all(line in free_lines for line in related_lines):
                 valid_triangles.append(triangle)
-            # if condition end.
-        # for loop end.
+            # Condition "if" end.
+        # Loop "for" end.
 
         return valid_triangles
     # Method "get_free_tricky_triangles_corner" end.
