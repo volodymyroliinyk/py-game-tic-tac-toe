@@ -26,7 +26,8 @@ WINNING_COMBINATIONS = [
 ]
 # CORNER in (0, 2, 6, 8)
 # Especial combination which can help to winn 100%.
-TRICKY_TRIANGLE_COMBINATIONS = [
+# TODO:[1]: new method get_free_TRICKY_TRIANGLE_COMBINATIONS
+TRICKY_TRIANGLE_COMBINATIONS_BIG = [
     # Small. TODO: start of those TRIANGLEs must be from corner coordinate!
     # (0, 4, 1),
     # (2, 4, 1),
@@ -46,7 +47,8 @@ TRICKY_TRIANGLE_COMBINATIONS = [
 # CORNER in (0, 2, 6, 8)
 # TODO:[1]: to Implement new additional TRICKY TRIANGLE strategy!
 # Especial combination which can help to winn 100%, but triangle is another one.
-TRICKY_TRIANGLE_COMBINATIONS_2 = [
+# TODO:[1]: new method get_free_TRICKY_TRIANGLE_COMBINATIONS_2
+TRICKY_TRIANGLE_COMBINATIONS_SMALL = [
     (0, 4, 1),
     (2, 4, 1),
     (2, 4, 5),

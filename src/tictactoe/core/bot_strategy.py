@@ -32,9 +32,6 @@
 
 
 import random
-from .game_logic import WINNING_COMBINATIONS
-from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS
-from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_2
 
 # Tricky triangle strategy
 #  012 0.? 0?2 ?.2 ?.?
@@ -62,7 +59,12 @@ class BotStrategyMixin:
     # Must be used just for a Bot.
     def find_potentially_winning_step(self):
         bot_free_winning_combinations = self.get_free_winning_combinations(self.bot)
+        print(f"bot_free_winning_combinations: {bot_free_winning_combinations}")
         user_free_winning_combinations = self.get_free_winning_combinations(self.human.get())
+        bot_free_tricky_triangles_big = self.get_free_tricky_triangles_big(self.bot)
+        bot_free_tricky_triangles_small = self.get_free_tricky_triangles_small(self.bot)
+        bot_free_tricky_triangles_merged = bot_free_tricky_triangles_big + bot_free_tricky_triangles_small
+        print(f"bot_free_tricky_triangles_merged: {bot_free_tricky_triangles_merged}")
         # The best is to take the center of the board first for Bot.
         # OR
         # Tricky triangle strategy, step 1.
@@ -87,7 +89,7 @@ class BotStrategyMixin:
             # if condition end.
         # for loop end.
 
-        # Play with that TRICKY_TRIANGLE_COMBINATIONS
+        # Play with that TRICKY_TRIANGLE_COMBINATIONS_...
         if self.board[4] is self.bot:
             # Tricky triangle strategy, step 2.
             for corner in (0, 2, 6, 8):
@@ -98,19 +100,19 @@ class BotStrategyMixin:
             # for loop end.
 
             # Tricky triangle strategy, step 3.
-            for a, mid, c in TRICKY_TRIANGLE_COMBINATIONS:
-                # гарантуємо, що це правильний трикутник із центром
+            for a, mid, c in bot_free_tricky_triangles_merged:
+                # ensure that it is a regular triangle centered on
                 if mid != 4:
                     continue
                 # if condition end.
 
-                # випадок: бот уже взяв ліву вершину, права вільна
+                # case: the bot has already taken the left vertex, the right one is free
                 if self.board[a] is self.bot and self.board[c] is None:
                     print("BOT STEP: 3 (triangle a->c)")  # debug
                     return c
                 # if condition end.
 
-                # випадок: бот уже взяв праву вершину, ліва вільна
+                # case: the bot has already taken the right vertex, the left is free
                 if self.board[c] is self.bot and self.board[a] is None:
                     print("BOT STEP: 3 (triangle c->a)")  # debug
                     return a
