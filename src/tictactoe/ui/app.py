@@ -25,9 +25,9 @@ from ..core.constants import NOUGHT_SYMBOL
 # Done:[1]: ? help icon with instruction how to play this game
 # Done:[1]: Game logic separate to sub files.
 
-# TODO:[1]: Unit testing for functions and like selenium for the frontend, if it is possible.
+# TODO:[1]: Unit testing for functions, methods and like selenium for the frontend, if it is possible.
 # TODO:[1]: Mac OS runner (without installation).
-# TODO:[2]: Replace X and 0 with SVG images.
+# TODO:[2]: Replace X and 0 with PNG images.
 # TODO:[2]: Multilingual support?
 
 
@@ -158,6 +158,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
 
         # Game started status
         self.started = True
+        print("--------------------------- START ---------------------------")  # debug
 
         if self.human.get() == CROSS_SYMBOL:
             self.bot = NOUGHT_SYMBOL

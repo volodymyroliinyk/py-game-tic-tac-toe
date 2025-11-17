@@ -33,22 +33,13 @@
 
 import random
 from .game_logic import WINNING_COMBINATIONS
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_2
 
 # Tricky triangle strategy
 #  012 0.? 0?2 ?.2 ?.?
 #  345 ?4. .4. .4? .4.
 #  678 6.? ?.? ?.8 6?8
-
-# WINNING_COMBINATIONS = [
-#     (0, 1, 2),
-#     (3, 4, 5),
-#     (6, 7, 8),
-#     (0, 3, 6),
-#     (1, 4, 7),
-#     (2, 5, 8),
-#     (0, 4, 8),
-#     (2, 4, 6),
-# ]
 
 # Tricky triangle strategy steps:
 # 1) This strategy can be successful if the Bot has already taken a center [4]
@@ -56,8 +47,6 @@ from .game_logic import WINNING_COMBINATIONS
 # 3) Find TRIANGLEs which are related to [4][0] OR [4][2] OR [4][6] OR [4][8]
 # 4) Take the first free angle cell related to one of the TRIANGLEs
 # 5) Last step is already provided by existing logic.
-
-
 
 # TODO:[1]:
 #  Manual and automated testing strategies:
@@ -68,11 +57,12 @@ from .game_logic import WINNING_COMBINATIONS
 #  4) Need to test how smart the bot is to prevent the user from winning.
 #  5) Need to test how smart the bot is to balance between 3 and 4.
 
-from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS
 
 class BotStrategyMixin:
     # Must be used just for a Bot.
     def find_potentially_winning_step(self):
+        bot_free_winning_combinations = self.get_free_winning_combinations(self.bot)
+        user_free_winning_combinations = self.get_free_winning_combinations(self.human.get())
         # The best is to take the center of the board first for Bot.
         # OR
         # Tricky triangle strategy, step 1.
@@ -85,7 +75,7 @@ class BotStrategyMixin:
 
         # First loop for prevent User's win
         # Done:[1]: The bot must prevent the user from winning, that is, it must see the user's progress and prevent him.
-        for winning_combination in WINNING_COMBINATIONS:
+        for winning_combination in user_free_winning_combinations:
             values = [self.board[index] for index in winning_combination]
             none_count = values.count(None)
             human_symbol_count = values.count(self.human.get())  # for prevent user's win
@@ -109,7 +99,6 @@ class BotStrategyMixin:
 
             # Tricky triangle strategy, step 3.
             for a, mid, c in TRICKY_TRIANGLE_COMBINATIONS:
-                print(f"BOT STEP: a {a}, mid {mid}, c {c}")  # debug
                 # гарантуємо, що це правильний трикутник із центром
                 if mid != 4:
                     continue
@@ -128,8 +117,32 @@ class BotStrategyMixin:
                 # if condition end.
             # for loop end.
 
-        # Second loop for smart bot step
-        for winning_combination in WINNING_COMBINATIONS:
+        # Весь цей цикл про аналіз кожної ліннії по черзі та прийнятя рішення на льоту,
+        #  а потрібно проаналізувати кілька ліній і прийняти рішення на основі ліній Юзера і Бота,
+        #  щоб пріоритет перемогти запрацював.
+        # ENG:
+        # This whole cycle is about analyzing each line in turn and making decisions on the fly,
+        # and you need to analyze several lines and make a decision based on the lines of the User and Bot,
+        # for the priority to win to work.
+
+        # Стратегія пріоритету:
+        # 1) Проходимось по всіх переможних комбінаціях.
+        # 2) Збираємо дані для перемоги бота
+        # 3) Збираємо дані для перемоги юзера
+        # 4) після проходженя всіх комбінацій лише наступним кроком робимо вибір перемогти чи перешколити,
+        #    на основі зібраних даних.
+        # 5) Робити лише один ретурн з цього методу
+        # ENG:
+        # Priority Strategy:
+        # 1) Let's go through all the winning combinations.
+        # 2) Collecting data for the bot to win
+        # 3) Collect data for the user's victory
+        # 4) after passing all the combinations, only the next step is to make a choice to win or re-train,
+        #    based on the data collected.
+        # 5) Make only one return from this method
+
+        # Loop for smart bot step.
+        for winning_combination in bot_free_winning_combinations:
             values = [self.board[index] for index in winning_combination]
             own_symbol_count = values.count(self.bot)
             none_count = values.count(None)

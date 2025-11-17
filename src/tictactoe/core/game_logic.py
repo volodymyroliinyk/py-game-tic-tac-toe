@@ -19,6 +19,8 @@
 # 012, 345, 678, 036, 147, 258, 048, 246
 
 from ..core.constants import WINNING_COMBINATIONS
+from ..core.constants import CROSS_SYMBOL
+from ..core.constants import NOUGHT_SYMBOL
 
 class GameLogicMixin:
     # Convert to one-dimensional list? return index 0-8
@@ -43,3 +45,19 @@ class GameLogicMixin:
 
         return None
     # Method "check_winner" end.
+
+    # Getting free winning combinations from WINNING_COMBINATIONS for X or for O
+    def get_free_winning_combinations(self, symbol):
+        opponent = WINNING_COMBINATIONS if symbol == CROSS_SYMBOL else CROSS_SYMBOL
+
+        free_lines = []
+
+        for combination in WINNING_COMBINATIONS:
+            values = [self.board[i] for i in combination]
+
+            if opponent in values:
+                continue
+
+            free_lines.append(combination)
+
+        return free_lines
