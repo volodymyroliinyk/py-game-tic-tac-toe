@@ -90,3 +90,9 @@ TRIANGLE_TO_LINES_SMALL = {
     (6, 4, 3): [(3, 4, 5), (0, 3, 6)],
     (0, 4, 3): [(3, 4, 5), (0, 3, 6)],
 }
+
+# TODO:[1] I found one more TRICKY_TRIANGLE_COMBINATIONS, need to implement for bot strategies, but if bot not occupied board center, bot can win!
+# example
+# 1:O 2:X X
+# 3:O 1:X
+# 2:O 2:O 3:X

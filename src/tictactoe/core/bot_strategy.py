@@ -163,11 +163,11 @@ class BotStrategyMixin:
                 bot_free_index = winning_combination[free_index]
                 print("BOT STEP: 4.1")  # debug
                 return winning_combination[free_index]
-            elif bot_symbol_count == 1 and none_count == 2:
-                free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
-                print("BOT STEP: 4.2")  # debug
-                bot_free_index = random.choice(free_indices)
-                return random.choice(free_indices)
+            # elif bot_symbol_count == 1 and none_count == 2:
+            #     free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
+            #     print("BOT STEP: 4.2")  # debug
+            #     bot_free_index = random.choice(free_indices)
+            #     return random.choice(free_indices)
             # This part is too much.
             # elif bot_symbol_count == 0 and none_count == 3:
             #     # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
