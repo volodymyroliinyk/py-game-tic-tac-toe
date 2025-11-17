@@ -58,6 +58,10 @@ import random
 class BotStrategyMixin:
     # Must be used just for a Bot.
     def find_potentially_winning_step(self):
+        bot_can_win = False
+        user_can_win = False
+        bot_free_index = None
+        user_free_index = None
         bot_free_winning_combinations = self.get_free_winning_combinations(self.bot)
         print(f"bot_free_winning_combinations: {bot_free_winning_combinations}")
         user_free_winning_combinations = self.get_free_winning_combinations(self.human.get())
@@ -80,10 +84,12 @@ class BotStrategyMixin:
         for winning_combination in user_free_winning_combinations:
             values = [self.board[index] for index in winning_combination]
             none_count = values.count(None)
-            human_symbol_count = values.count(self.human.get())  # for prevent user's win
+            user_symbol_count = values.count(self.human.get())  # for prevent user's win
             #
-            if human_symbol_count == 2 and none_count == 1:
+            if user_symbol_count == 2 and none_count == 1:
                 free_index = values.index(None)
+                user_can_win = True
+                user_free_index = winning_combination[free_index]
                 print("BOT STEP: 2")  # debug
                 return winning_combination[free_index]
             # if condition end.
@@ -91,13 +97,13 @@ class BotStrategyMixin:
 
         # Play with that TRICKY_TRIANGLE_COMBINATIONS_...
         if self.board[4] is self.bot:
-            # Tricky triangle strategy, step 2.
-            for corner in (0, 2, 6, 8):
-                if self.board[corner] is None:
-                    print("BOT STEP: 3")  # debug
-                    return corner
-                # if condition end.
-            # for loop end.
+            # # Tricky triangle strategy, step 2.
+            # for corner in (0, 2, 6, 8):
+            #     if self.board[corner] is None:
+            #         print("BOT STEP: 3")  # debug
+            #         return corner
+            #     # if condition end.
+            # # for loop end.
 
             # Tricky triangle strategy, step 3.
             for a, mid, c in bot_free_tricky_triangles_merged:
@@ -106,17 +112,19 @@ class BotStrategyMixin:
                     continue
                 # if condition end.
 
+                # case: the bot has already taken the right vertex, the left is free
+                if self.board[c] is self.bot and self.board[a] is None:
+                    print("BOT STEP: 3 (triangle c->a)")  # debug
+                    return a
+                # if condition end.
+
                 # case: the bot has already taken the left vertex, the right one is free
                 if self.board[a] is self.bot and self.board[c] is None:
                     print("BOT STEP: 3 (triangle a->c)")  # debug
                     return c
                 # if condition end.
 
-                # case: the bot has already taken the right vertex, the left is free
-                if self.board[c] is self.bot and self.board[a] is None:
-                    print("BOT STEP: 3 (triangle c->a)")  # debug
-                    return a
-                # if condition end.
+
             # for loop end.
 
         # Весь цей цикл про аналіз кожної ліннії по черзі та прийнятя рішення на льоту,
@@ -146,27 +154,31 @@ class BotStrategyMixin:
         # Loop for smart bot step.
         for winning_combination in bot_free_winning_combinations:
             values = [self.board[index] for index in winning_combination]
-            own_symbol_count = values.count(self.bot)
+            bot_symbol_count = values.count(self.bot)
             none_count = values.count(None)
 
-            if own_symbol_count == 2 and none_count == 1:
+            if bot_symbol_count == 2 and none_count == 1:
                 free_index = values.index(None)
+                bot_can_win = True
+                bot_free_index = winning_combination[free_index]
                 print("BOT STEP: 4.1")  # debug
                 return winning_combination[free_index]
-            elif own_symbol_count == 1 and none_count == 2:
+            elif bot_symbol_count == 1 and none_count == 2:
                 free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
                 print("BOT STEP: 4.2")  # debug
+                bot_free_index = random.choice(free_indices)
                 return random.choice(free_indices)
-            elif own_symbol_count == 0 and none_count == 3:
-                # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
-                for x in [1, 3, 5, 7]:
-                    if x in winning_combination:
-                        print("BOT STEP: 4.3")  # debug
-                        return x
-                    # if condition end.
-                # for condition end.
-                print("BOT STEP: 4.4")  # debug
-                return random.choice(winning_combination)
+            # This part is too much.
+            # elif bot_symbol_count == 0 and none_count == 3:
+            #     # Done:[1]: Maybe need to remove 4 from this list because Bot already took that as first condition in this method
+            #     for x in [1, 3, 5, 7]:
+            #         if x in winning_combination:
+            #             print("BOT STEP: 4.3")  # debug
+            #             return x
+            #         # if condition end.
+            #     # for condition end.
+            #     print("BOT STEP: 4.4")  # debug
+            #     return random.choice(winning_combination)
             # if condition end.
         # for loop end.
         print("BOT STEP: 5")  # debug

@@ -28,15 +28,6 @@ WINNING_COMBINATIONS = [
 # Especial combination which can help to winn 100%.
 # TODO:[1]: new method get_free_TRICKY_TRIANGLE_COMBINATIONS
 TRICKY_TRIANGLE_COMBINATIONS_BIG = [
-    # Small. TODO: start of those TRIANGLEs must be from corner coordinate!
-    # (0, 4, 1),
-    # (2, 4, 1),
-    # (2, 4, 5),
-    # (8, 4, 5),
-    # (8, 4, 7),
-    # (6, 4, 7),
-    # (6, 4, 3),
-    # (0, 4, 3),
     # Big.
     (0, 4, 6),  # Need to check if is free: 2,3,8 | Winning lines for this triangle: 048 OR 246 OR 036
     (0, 4, 2),  # Need to check if is free: 1,6,8 | Winning lines for this triangle: 048 OR 246 OR 012
@@ -53,8 +44,8 @@ TRICKY_TRIANGLE_COMBINATIONS_SMALL = [
     (2, 4, 1),
     (2, 4, 5),
     (8, 4, 5),
-    (7, 4, 8),
-    (7, 4, 6),
+    (8, 4, 7),
+    (6, 4, 7),
     (6, 4, 3),
     (0, 4, 3),
 ]
