@@ -7,6 +7,8 @@ from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_BIG
 from ..core.constants import TRIANGLE_TO_LINES_BIG
 from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_SMALL
 from ..core.constants import TRIANGLE_TO_LINES_SMALL
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_CORNER
+from ..core.constants import TRIANGLE_TO_LINES_CORNER
 
 class GameLogicMixin:
     # Convert to one-dimensional list? return index 0-8.
@@ -126,3 +128,40 @@ class GameLogicMixin:
 
         return valid_triangles
     #  Method "get_free_tricky_triangles_small" end.
+
+    # Triangles of the third type (without an occupied center):
+    #  - there are no opponent's pieces in the triangle itself
+    #  - Linked 2 paylines are free
+    #  - center of the board (4) is not occupied ("corner fork without center" strategy)
+    def get_free_tricky_triangles_corner(self, symbol):
+        if symbol == CROSS_SYMBOL:
+            opponent = NOUGHT_SYMBOL
+        else:
+            opponent = CROSS_SYMBOL
+        # if condition end.
+
+        # We take all free paylines for the symbol.
+        free_lines = set(self.get_free_winning_combinations(symbol))
+
+        valid_triangles = []
+
+        for triangle in TRICKY_TRIANGLE_COMBINATIONS_CORNER:
+            a, mid, c = triangle
+            tri_cells = [self.board[a], self.board[mid], self.board[c]]
+
+            # If there is already an opponent's figure in the triangle, the triangle is dead.
+            if opponent in tri_cells:
+                continue
+            # if condition end.
+
+            # Two paylines are linked.
+            related_lines = TRIANGLE_TO_LINES_CORNER.get(triangle, [])
+
+            # Both lines must be free (no opponent).
+            if all(line in free_lines for line in related_lines):
+                valid_triangles.append(triangle)
+            # if condition end.
+        # for loop end.
+
+        return valid_triangles
+    # Method "get_free_tricky_triangles_corner" end.
