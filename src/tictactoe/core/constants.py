@@ -12,6 +12,7 @@ NOUGHT_IMG_BLACK = "assets/images/NOUGHT_BLACK.png"
 # Winning images.
 CROSS_IMG_GREEN = "assets/images/CROSS_GREEN.png"
 NOUGHT_IMG_GREEN = "assets/images/NOUGHT_GREEN.png"
+
 # CORNER in (0, 2, 6, 8)
 # Just all possible winning combinations.
 WINNING_COMBINATIONS = [
@@ -24,11 +25,13 @@ WINNING_COMBINATIONS = [
     (0, 4, 8),
     (2, 4, 6),
 ]
+
 # CORNER in (0, 2, 6, 8)
-# Especial combination which can help to winn 100%.
-# TODO:[1]: new method get_free_TRICKY_TRIANGLE_COMBINATIONS
+# Especial combination which can help to winn 100%. Big triangles.
 TRICKY_TRIANGLE_COMBINATIONS_BIG = [
     # Big.
+    # Important! corner cell always first with index 0.
+    # Important! board center cell always second with index 1.
     (0, 4, 6),  # Need to check if is free: 2,3,8 | Winning lines for this triangle: 048 OR 246 OR 036
     (0, 4, 2),  # Need to check if is free: 1,6,8 | Winning lines for this triangle: 048 OR 246 OR 012
     (2, 4, 8),  # Need to check if is free: 0,5,6 | Winning lines for this triangle: 048 OR 246 OR 258
@@ -36,10 +39,11 @@ TRICKY_TRIANGLE_COMBINATIONS_BIG = [
 ]
 
 # CORNER in (0, 2, 6, 8)
-# TODO:[1]: to Implement new additional TRICKY TRIANGLE strategy!
-# Especial combination which can help to winn 100%, but triangle is another one.
-# TODO:[1]: new method get_free_TRICKY_TRIANGLE_COMBINATIONS_2
+# Especial combination which can help to winn 100%, but triangle is another one. Small triangles.
 TRICKY_TRIANGLE_COMBINATIONS_SMALL = [
+    # Small.
+    # Important! corner cell always first with index 0.
+    # Important! board center cell always second with index 1.
     (0, 4, 1),
     (2, 4, 1),
     (2, 4, 5),
