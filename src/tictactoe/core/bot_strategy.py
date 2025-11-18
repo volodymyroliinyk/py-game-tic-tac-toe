@@ -63,8 +63,6 @@ class BotStrategyMixin:
         bot_free_tricky_triangles_merged = bot_free_tricky_triangles_big + bot_free_tricky_triangles_small
         # print(f"bot_free_tricky_triangles_merged: {bot_free_tricky_triangles_merged}")
 
-        # TODO:[1]: Fix Priority between "Tricky triangle strategy, step 2." AND "First loop for prevent User's win" :)
-
         # First loop for prevent User's win.
         for winning_combination in user_free_winning_combinations:
             values = [self.board[index] for index in winning_combination]

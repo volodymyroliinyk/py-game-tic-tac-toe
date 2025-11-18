@@ -1,6 +1,10 @@
 py-game-tic-tac-toe/
 ├── assets/
 │   ├── images/
+│       ├── CROSS_BLACK_140.png
+│       ├── CROSS_GREEN_140.png
+│       ├── NOUGHT_BLACK_140.png
+│       └── NOUGHT_GREEN_140.png
 ├── src/
 │   ├── __pycache__/
 │   │   └── main.cpython-312.pyc

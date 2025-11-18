@@ -1,17 +1,15 @@
 # /src/tictactoe/core/constants.py
 
-# TODO:[2]: use images instead of symbols.
 CROSS_SYMBOL = "X"
 NOUGHT_SYMBOL = "O"
 
-# TODO:[2]: need to find normal images.
 # Regular images.
-CROSS_IMG_BLACK = "assets/images/CROSS_BLACK.png"
-NOUGHT_IMG_BLACK = "assets/images/NOUGHT_BLACK.png"
+CROSS_IMG_BLACK = "assets/images/CROSS_BLACK_140.png"
+NOUGHT_IMG_BLACK = "assets/images/NOUGHT_BLACK_140.png"
 
 # Winning images.
-CROSS_IMG_GREEN = "assets/images/CROSS_GREEN.png"
-NOUGHT_IMG_GREEN = "assets/images/NOUGHT_GREEN.png"
+CROSS_IMG_GREEN = "assets/images/CROSS_GREEN_140.png"
+NOUGHT_IMG_GREEN = "assets/images/NOUGHT_GREEN_140.png"
 
 # Winning combinations for X
 # XXX 000 000 X00 0X0 00X X00 00X
