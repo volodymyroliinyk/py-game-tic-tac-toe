@@ -29,3 +29,7 @@ A single-player tic-tac-toe implementation in Python.
 
 ---
 
+## Testing
+
+`PYTHONPATH=src pytest -q`
+

@@ -59,13 +59,10 @@ class GameLogicMixin:
         free_lines.sort(key=lambda item: item[1].count(None))
 
         # We return only combinations, without tri_cells.
-        return [combo for combo, _ in free_lines]
+        return [combination for combination, _ in free_lines]
     #  Method "get_free_winning_combinations" end.
 
-    # Returns all triangles that can still be used to create a fork:
-    # - there are no opponent pieces in the triangle
-    # - all related paylines are also free (do not contain an opponent).
-    def get_free_tricky_triangles_big(self, symbol):
+    def get_free_tricky_triangles_common(self, symbol, tricky_triangle_combinations, triangle_to_lines):
         if symbol == CROSS_SYMBOL:
             opponent = NOUGHT_SYMBOL
         else:
@@ -77,7 +74,7 @@ class GameLogicMixin:
 
         valid_triangles = []
 
-        for triangle in TRICKY_TRIANGLE_COMBINATIONS_BIG:
+        for triangle in tricky_triangle_combinations:
             a, mid, c = triangle
             tri_cells = [self.board[a], self.board[mid], self.board[c]]
 
@@ -87,7 +84,7 @@ class GameLogicMixin:
             # Condition "if" end.
 
             # Check all its related lines.
-            related_lines = TRIANGLE_TO_LINES_BIG.get(triangle, [])
+            related_lines = triangle_to_lines.get(triangle, [])
 
             # All three lines must be free.
             if all(line in free_lines for line in related_lines):
@@ -96,74 +93,9 @@ class GameLogicMixin:
         # Loop "for" end.
 
         return valid_triangles
+
     #  Method "get_free_tricky_triangles_big" end.
 
-    def get_free_tricky_triangles_small(self, symbol):
-        if symbol == CROSS_SYMBOL:
-            opponent = NOUGHT_SYMBOL
-        else:
-            opponent = CROSS_SYMBOL
-        # Condition "if" end.
-
-        # Take all free paylines as a set.
-        free_lines = set(self.get_free_winning_combinations(symbol))
-
-        valid_triangles = []
-
-        for triangle in TRICKY_TRIANGLE_COMBINATIONS_SMALL:
-            a, mid, c = triangle
-            tri_cells = [self.board[a], self.board[mid], self.board[c]]
-
-            # If there is an opponent in the triangle itself -> he is busy.
-            if opponent in tri_cells:
-                continue
-            # Condition "if" end.
-
-            # Take a list of related lines.
-            related_lines = TRIANGLE_TO_LINES_SMALL.get(triangle, [])
-
-            # These two lines must be free.
-            if all(line in free_lines for line in related_lines):
-                valid_triangles.append(triangle)
-            # Condition "if" end.
-        # Loop "for" end.
-
-        return valid_triangles
-    #  Method "get_free_tricky_triangles_small" end.
-
-    # Triangles of the third type (without an occupied center):
-    #  - there are no opponent's pieces in the triangle itself
-    #  - Linked 2 paylines are free
-    #  - center of the board (4) is not occupied ("corner fork without center" strategy)
-    def get_free_tricky_triangles_corner(self, symbol):
-        if symbol == CROSS_SYMBOL:
-            opponent = NOUGHT_SYMBOL
-        else:
-            opponent = CROSS_SYMBOL
-        # Condition "if" end.
-
-        # We take all free paylines for the symbol.
-        free_lines = set(self.get_free_winning_combinations(symbol))
-
-        valid_triangles = []
-
-        for triangle in TRICKY_TRIANGLE_COMBINATIONS_CORNER:
-            a, mid, c = triangle
-            tri_cells = [self.board[a], self.board[mid], self.board[c]]
-
-            # If there is already an opponent's figure in the triangle, the triangle is dead.
-            if opponent in tri_cells:
-                continue
-            # Condition "if" end.
-
-            # Two paylines are linked.
-            related_lines = TRIANGLE_TO_LINES_CORNER.get(triangle, [])
-
-            # Both lines must be free (no opponent).
-            if all(line in free_lines for line in related_lines):
-                valid_triangles.append(triangle)
-            # Condition "if" end.
-        # Loop "for" end.
-
-        return valid_triangles
-    # Method "get_free_tricky_triangles_corner" end.
+    # Returns all triangles that can still be used to create a fork:
+    # - there are no opponent pieces in the triangle
+    # - all related paylines are also free (do not contain an opponent).

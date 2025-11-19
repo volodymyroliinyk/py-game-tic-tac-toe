@@ -33,7 +33,12 @@
 
 import random
 from ..core.constants import CORNERS
-
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_BIG
+from ..core.constants import TRIANGLE_TO_LINES_BIG
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_SMALL
+from ..core.constants import TRIANGLE_TO_LINES_SMALL
+from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_CORNER
+from ..core.constants import TRIANGLE_TO_LINES_CORNER
 
 
 
@@ -49,16 +54,22 @@ class BotStrategyMixin:
         # OR
         # Tricky triangle strategy, step 1.
         if self.board[4] is None:
-            # print("BOT STEP: 1")  # debug
+            print("BOT STEP: 1")  # debug
             return 4
         # Condition "if" end.
 
         bot_free_winning_combinations = self.get_free_winning_combinations(self.bot)
         # print(f"bot_free_winning_combinations: {bot_free_winning_combinations}")
         user_free_winning_combinations = self.get_free_winning_combinations(self.human.get())
-        bot_free_tricky_triangles_big = self.get_free_tricky_triangles_big(self.bot)
-        bot_free_tricky_triangles_small = self.get_free_tricky_triangles_small(self.bot)
-        bot_free_tricky_triangles_corner = self.get_free_tricky_triangles_corner(self.bot)
+        bot_free_tricky_triangles_big = self.get_free_tricky_triangles_common(self.bot,
+                                                                              TRICKY_TRIANGLE_COMBINATIONS_BIG,
+                                                                              TRIANGLE_TO_LINES_BIG)
+        bot_free_tricky_triangles_small = self.get_free_tricky_triangles_common(self.bot,
+                                                                                TRICKY_TRIANGLE_COMBINATIONS_SMALL,
+                                                                                TRIANGLE_TO_LINES_SMALL)
+        bot_free_tricky_triangles_corner = self.get_free_tricky_triangles_common(self.bot,
+                                                                                 TRICKY_TRIANGLE_COMBINATIONS_CORNER,
+                                                                                 TRIANGLE_TO_LINES_CORNER)
         # print(f"bot_free_tricky_triangles_corner: {bot_free_tricky_triangles_corner}")
         bot_free_tricky_triangles_merged = bot_free_tricky_triangles_big + bot_free_tricky_triangles_small
         # print(f"bot_free_tricky_triangles_merged: {bot_free_tricky_triangles_merged}")
@@ -73,7 +84,7 @@ class BotStrategyMixin:
                 free_index = values.index(None)
                 user_can_win = True
                 user_free_index = winning_combination[free_index]
-                # print("BOT STEP: 2")  # debug
+                print("BOT STEP: 2")  # debug
                 break
             # Condition "if" end.
         # Loop "for" end.
@@ -89,14 +100,14 @@ class BotStrategyMixin:
 
                 # The bot has already taken the right vertex, the left is free.
                 if self.board[c] is self.bot and self.board[a] is None:
-                    # print("BOT TRIANGLE: 3 (triangle c->a)")  # debug
+                    print("BOT TRIANGLE: 3 (triangle c->a)")  # debug
                     bot_free_index = a
                     break
                 # Condition "if" end.
 
                 # The bot has already taken the left vertex, the right one is free.
                 if self.board[a] is self.bot and self.board[c] is None:
-                    # print("BOT TRIANGLE: 3 (triangle a->c)")  # debug
+                    print("BOT TRIANGLE: 3 (triangle a->c)")  # debug
                     bot_free_index = c
                     break
                 # Condition "if" end.
@@ -115,7 +126,7 @@ class BotStrategyMixin:
                     for corner in CORNERS:
                         if corner in (a, c) and self.board[corner] is None:
                             bot_free_index = corner
-                            # print(f"BOT CORNER TRIANGLE: take empty-corner start {bot_free_index}")
+                            print(f"BOT CORNER TRIANGLE: take empty-corner start {bot_free_index}")
                             break
                         # Condition "if" end.
                     # Loop "for" end.
@@ -127,20 +138,20 @@ class BotStrategyMixin:
 
                     # If for some reason there are no angles (theoretically unlikely) - we take a.
                     bot_free_index = a
-                    # print(f"BOT CORNER TRIANGLE: take any from empty triangle {bot_free_index}")
+                    print(f"BOT CORNER TRIANGLE: take any from empty triangle {bot_free_index}")
                     break
                 # The bot already occupies 2 cells in a triangle - we take the third.
                 elif bot_count == 2 and len(none_positions) == 1:
                     idx = none_positions[0]
                     bot_free_index = tri_indices[idx]
-                    # print(f"BOT CORNER TRIANGLE: finish triangle at {bot_free_index}")  # debug
+                    print(f"BOT CORNER TRIANGLE: finish triangle at {bot_free_index}")  # debug
                     break
                 # Bot takes 1 cell, 2 empty.
                 elif bot_count == 1 and len(none_positions) == 2:
                     # If the mid is free, it is best to take it.
                     if self.board[mid] is None:
                         bot_free_index = mid
-                        # print(f"BOT CORNER TRIANGLE: take mid {mid}")  # debug
+                        print(f"BOT CORNER TRIANGLE: take mid {mid}")  # debug
                         break
                     # If mid is not free (theoretically it shouldn't be, but just in case).
                     else:
@@ -149,7 +160,7 @@ class BotStrategyMixin:
                             candidate = tri_indices[pos]
                             if candidate in (a, c) and self.board[candidate] is None:
                                 bot_free_index = candidate
-                                # print(f"BOT CORNER TRIANGLE: take corner {bot_free_index}")  # debug
+                                print(f"BOT CORNER TRIANGLE: take corner {bot_free_index}")  # debug
                                 break
                             # Condition "if" end.
                         # Loop "for" end.

@@ -31,8 +31,25 @@ py-game-tic-tac-toe/
 │   │   │   └── menu.py
 │   │   └── __init__.py
 │   └── main.py
+├── tests/
+│   ├── __pycache__/
+│   │   ├── test_bot_strategy_find_potentially_winning_step.cpython-312-pytest-9.0.1.pyc
+│   │   ├── test_game_logic_check_winner.cpython-312-pytest-9.0.1.pyc
+│   │   ├── test_game_logic_free_winning_combinations.cpython-312-pytest-9.0.1.pyc
+│   │   ├── test_game_logic_idx.cpython-312-pytest-9.0.1.pyc
+│   │   ├── test_game_logic_tricky_triangles_common.cpython-312-pytest-9.0.1.pyc
+│   │   └── test_ui_on_reset.cpython-312-pytest-9.0.1.pyc
+│   ├── test_bot_strategy_find_potentially_winning_step.py
+│   ├── test_game_logic_check_winner.py
+│   ├── test_game_logic_free_winning_combinations.py
+│   ├── test_game_logic_idx.py
+│   ├── test_game_logic_tricky_triangles_common.py
+│   └── test_ui_on_reset.py
 ├── LICENSE
 ├── README.md
+├── compare1.txt
+├── compare2.txt
+├── compare3.txt
 ├── directory-tree.txt
 ├── manual-test-cases.md
 └── pyproject.toml
