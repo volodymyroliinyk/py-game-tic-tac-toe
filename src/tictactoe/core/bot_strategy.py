@@ -30,7 +30,6 @@
 # 2) one X|0 and two other elements None, in any sequence stop at the first combination and output it,
 # 3) two X|0 and one None element, in any sequence stop on it and output it.
 
-
 import random
 from ..core.constants import CORNERS
 from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_BIG
@@ -39,8 +38,6 @@ from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_SMALL
 from ..core.constants import TRIANGLE_TO_LINES_SMALL
 from ..core.constants import TRICKY_TRIANGLE_COMBINATIONS_CORNER
 from ..core.constants import TRIANGLE_TO_LINES_CORNER
-
-
 
 class BotStrategyMixin:
     # Must be used just for a Bot.
@@ -61,15 +58,18 @@ class BotStrategyMixin:
         bot_free_winning_combinations = self.get_free_winning_combinations(self.bot)
         # print(f"bot_free_winning_combinations: {bot_free_winning_combinations}")
         user_free_winning_combinations = self.get_free_winning_combinations(self.human.get())
-        bot_free_tricky_triangles_big = self.get_free_tricky_triangles_common(self.bot,
-                                                                              TRICKY_TRIANGLE_COMBINATIONS_BIG,
-                                                                              TRIANGLE_TO_LINES_BIG)
-        bot_free_tricky_triangles_small = self.get_free_tricky_triangles_common(self.bot,
-                                                                                TRICKY_TRIANGLE_COMBINATIONS_SMALL,
-                                                                                TRIANGLE_TO_LINES_SMALL)
-        bot_free_tricky_triangles_corner = self.get_free_tricky_triangles_common(self.bot,
-                                                                                 TRICKY_TRIANGLE_COMBINATIONS_CORNER,
-                                                                                 TRIANGLE_TO_LINES_CORNER)
+        bot_free_tricky_triangles_big = self.get_free_tricky_triangles_common(
+            self.bot,
+            TRICKY_TRIANGLE_COMBINATIONS_BIG,
+            TRIANGLE_TO_LINES_BIG)
+        bot_free_tricky_triangles_small = self.get_free_tricky_triangles_common(
+            self.bot,
+            TRICKY_TRIANGLE_COMBINATIONS_SMALL,
+            TRIANGLE_TO_LINES_SMALL)
+        bot_free_tricky_triangles_corner = self.get_free_tricky_triangles_common(
+            self.bot,
+            TRICKY_TRIANGLE_COMBINATIONS_CORNER,
+            TRIANGLE_TO_LINES_CORNER)
         # print(f"bot_free_tricky_triangles_corner: {bot_free_tricky_triangles_corner}")
         bot_free_tricky_triangles_merged = bot_free_tricky_triangles_big + bot_free_tricky_triangles_small
         # print(f"bot_free_tricky_triangles_merged: {bot_free_tricky_triangles_merged}")
@@ -131,16 +131,16 @@ class BotStrategyMixin:
                         # Condition "if" end.
                     # Loop "for" end.
 
-                    # If we were able to choose an angle - we get out of the loop by triangles.
+                    # If were able to choose an angle - get out of the loop by triangles.
                     if bot_free_index is not None:
                         break
                     # Condition "if" end.
 
-                    # If for some reason there are no angles (theoretically unlikely) - we take a.
+                    # If for some reason there are no angles (theoretically unlikely) - need to take a.
                     bot_free_index = a
                     print(f"BOT CORNER TRIANGLE: take any from empty triangle {bot_free_index}")
                     break
-                # The bot already occupies 2 cells in a triangle - we take the third.
+                # The bot already occupies 2 cells in a triangle - need to take the third.
                 elif bot_count == 2 and len(none_positions) == 1:
                     idx = none_positions[0]
                     bot_free_index = tri_indices[idx]
@@ -165,7 +165,7 @@ class BotStrategyMixin:
                             # Condition "if" end.
                         # Loop "for" end.
 
-                        # If we find an angle, we proceed from the cycle of triangles.
+                        # If found an angle, need to proceed from the cycle of triangles.
                         if bot_free_index is not None:
                             break
                         # Condition "if" end.

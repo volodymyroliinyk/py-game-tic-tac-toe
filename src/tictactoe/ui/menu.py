@@ -8,7 +8,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-
 # Done:[1]: Separate menu to another py file.
 def create_menubar(self):
     menubar = tk.Menu(self, tearoff=0, borderwidth=0, activeborderwidth=0)
@@ -32,7 +31,6 @@ def create_menubar(self):
 
     # Shortcut for Help
     self.bind("<F1>", lambda e: on_help(self))
-
 
 # Method "_create_menubar" end.
 
@@ -74,7 +72,6 @@ def on_help(self):
 
     _open_modal_centered(self, "How to Play", 400, 300, build)
 
-
 def on_about(self):
     def build(top):
         text = tk.Text(
@@ -106,7 +103,6 @@ def on_about(self):
         ttk.Button(top, text="OK", command=top.destroy).pack(pady=8)
 
     _open_modal_centered(self, "About", 400, 300, build)
-
 
 # Method "on_about" end.
 

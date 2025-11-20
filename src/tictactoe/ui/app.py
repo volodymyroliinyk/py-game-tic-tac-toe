@@ -35,7 +35,6 @@ from ..core.constants import (
 # Done:[2]: Replace X and 0 with PNG images.
 # TODO:[2]: Multilingual support?
 
-
 # https://docs.python.org/3.12/library/tkinter.html
 # Window generator here.
 class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
@@ -63,7 +62,6 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
         self.bot = NOUGHT_SYMBOL  # Will update at startup.
         self.current = CROSS_SYMBOL  # Who walks now.
         self.started = False  # Whether they pressed Start.
-
 
         # Label Widget doc is here https://docs.python.org/3.12/library/tkinter.ttk.html
         # Create text and put it in the window.
@@ -248,7 +246,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
     def bot_move(self):
         print("bot_move ------------------------------------------")
 
-        # If the game hasn't started or it's not the bot's turn now, we don't do anything.
+        # If the game hasn't started or it's not the bot's turn now, don't do anything.
         if not self.started or self.current != self.bot:
             return
         # Condition "if" end.
@@ -327,7 +325,7 @@ class GameApp(BotStrategyMixin, GameLogicMixin, tk.Tk):
                     break
             # Loop "for" end.
 
-            # If you find a winning line, we highlight only it.
+            # If found a winning line, need to highlight only it.
             if winning_line is not None:
                 for index in winning_line:
                     if winner == CROSS_SYMBOL:

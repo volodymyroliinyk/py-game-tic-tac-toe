@@ -2,7 +2,6 @@
 
 from tictactoe.ui.app import GameApp
 
-
 # Run app here.
 def main():
     app = GameApp()

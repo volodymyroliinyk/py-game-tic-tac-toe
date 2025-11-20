@@ -29,7 +29,6 @@ NOUGHT_IMG_GREEN = "assets/images/NOUGHT_GREEN_140.png"
 # Winning combinations for indexes
 # 012, 345, 678, 036, 147, 258, 048, 246
 
-
 # CORNER in (0, 2, 6, 8)
 # Just all possible winning combinations.
 WINNING_COMBINATIONS = [

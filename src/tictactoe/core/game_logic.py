@@ -58,7 +58,7 @@ class GameLogicMixin:
         # Sorting, combinations with a less None on the start.
         free_lines.sort(key=lambda item: item[1].count(None))
 
-        # We return only combinations, without tri_cells.
+        # Return only combinations, without tri_cells.
         return [combination for combination, _ in free_lines]
     #  Method "get_free_winning_combinations" end.
 
