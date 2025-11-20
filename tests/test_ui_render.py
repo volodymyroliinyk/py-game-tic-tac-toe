@@ -1,3 +1,6 @@
+#
+# Run all tests: `PYTHONPATH=src pytest -q`
+#
 from tictactoe.ui.app import GameApp
 from tictactoe.core.constants import CROSS_SYMBOL, NOUGHT_SYMBOL
 

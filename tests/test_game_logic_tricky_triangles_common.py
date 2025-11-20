@@ -1,3 +1,6 @@
+#
+# Run all tests: `PYTHONPATH=src pytest -q`
+#
 from tictactoe.core.game_logic import GameLogicMixin
 from tictactoe.core.constants import (
     TRICKY_TRIANGLE_COMBINATIONS_BIG, TRIANGLE_TO_LINES_BIG,

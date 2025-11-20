@@ -1,3 +1,6 @@
+#
+# Run all tests: `PYTHONPATH=src pytest -q`
+#
 from tictactoe.core.bot_strategy import BotStrategyMixin
 from tictactoe.core.game_logic import GameLogicMixin
 from tictactoe.core.constants import CROSS_SYMBOL, NOUGHT_SYMBOL
