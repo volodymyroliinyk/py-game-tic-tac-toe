@@ -1,0 +1,36 @@
+py-game-tic-tac-toe/
+├── assets/
+│   ├── images/
+│       ├── CROSS_BLACK_140.png
+│       ├── CROSS_GREEN_140.png
+│       ├── NOUGHT_BLACK_140.png
+│       └── NOUGHT_GREEN_140.png
+├── src/
+│   ├── tictactoe/
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   ├── bot_strategy.py
+│   │   │   ├── constants.py
+│   │   │   └── game_logic.py
+│   │   ├── ui/
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   └── menu.py
+│   │   └── __init__.py
+│   └── main.py
+├── tests/
+│   ├── test_bot_strategy_find_potentially_winning_step.py
+│   ├── test_game_logic_check_winner.py
+│   ├── test_game_logic_free_winning_combinations.py
+│   ├── test_game_logic_idx.py
+│   ├── test_game_logic_tricky_triangles_common.py
+│   ├── test_ui_bot_move.py
+│   ├── test_ui_end_game.py
+│   ├── test_ui_on_cell_click.py
+│   ├── test_ui_on_reset.py
+│   ├── test_ui_on_start.py
+│   └── test_ui_render.py
+├── LICENSE
+├── README.md
+├── directory-tree.txt
+└── pyproject.toml
