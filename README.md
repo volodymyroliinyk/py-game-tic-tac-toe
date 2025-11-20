@@ -16,9 +16,9 @@ A single-player **Tic-Tac-Toe** game written in **Python 3** using **Tkinter**.
 
 ---
 
-# Installation & Running
+## Installation & Running
 
-## macOS
+### macOS
 
 1) Check Python version `python3 --version`
 2) Install Brew (if not installed):
@@ -28,7 +28,7 @@ A single-player **Tic-Tac-Toe** game written in **Python 3** using **Tkinter**.
 5) Go to `/path/to/directory/py-game-tic-tac-toe`
 6) Run application: `PYTHONPATH=src python3 -m main`
 
-## Ubuntu:
+### Ubuntu
 
 1) Check Python version  `python3 --version;`
 2) Install Python 3.x:`sudo apt install python3;`
