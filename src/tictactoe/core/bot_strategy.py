@@ -51,6 +51,7 @@ class BotStrategyMixin:
         # OR
         # Tricky triangle strategy, step 1.
         if self.board[4] is None:
+            # t+
             print("BOT STEP: 1")  # debug
             return 4
         # Condition "if" end.
@@ -84,6 +85,7 @@ class BotStrategyMixin:
                 free_index = values.index(None)
                 user_can_win = True
                 user_free_index = winning_combination[free_index]
+                # t+
                 print("BOT STEP: 2")  # debug
                 break
             # Condition "if" end.
@@ -126,6 +128,7 @@ class BotStrategyMixin:
                     for corner in CORNERS:
                         if corner in (a, c) and self.board[corner] is None:
                             bot_free_index = corner
+                            # t+
                             print(f"BOT CORNER TRIANGLE: take empty-corner start {bot_free_index}")
                             break
                         # Condition "if" end.
@@ -144,6 +147,7 @@ class BotStrategyMixin:
                 elif bot_count == 2 and len(none_positions) == 1:
                     idx = none_positions[0]
                     bot_free_index = tri_indices[idx]
+                    # t+
                     print(f"BOT CORNER TRIANGLE: finish triangle at {bot_free_index}")  # debug
                     break
                 # Bot takes 1 cell, 2 empty.
@@ -151,6 +155,7 @@ class BotStrategyMixin:
                     # If the mid is free, it is best to take it.
                     if self.board[mid] is None:
                         bot_free_index = mid
+                        # t+
                         print(f"BOT CORNER TRIANGLE: take mid {mid}")  # debug
                         break
                     # If mid is not free (theoretically it shouldn't be, but just in case).
@@ -160,6 +165,7 @@ class BotStrategyMixin:
                             candidate = tri_indices[pos]
                             if candidate in (a, c) and self.board[candidate] is None:
                                 bot_free_index = candidate
+                                # t+
                                 print(f"BOT CORNER TRIANGLE: take corner {bot_free_index}")  # debug
                                 break
                             # Condition "if" end.
@@ -184,11 +190,13 @@ class BotStrategyMixin:
                 free_index = values.index(None)
                 bot_can_win = True
                 bot_free_index = winning_combination[free_index]
+                # t+
                 print("BOT STEP: 4.1")  # debug
                 break
                 # return winning_combination[free_index]
             elif bot_symbol_count == 1 and none_count == 2:
                 free_indices = [winning_combination[i] for i, v in enumerate(values) if v is None]
+                # t+
                 print("BOT STEP: 4.2")  # debug
                 bot_free_index = random.choice(free_indices)
                 break
