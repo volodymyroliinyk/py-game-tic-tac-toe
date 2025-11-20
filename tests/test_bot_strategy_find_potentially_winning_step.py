@@ -3,7 +3,7 @@
 #
 from tictactoe.core.bot_strategy import BotStrategyMixin
 from tictactoe.core.game_logic import GameLogicMixin
-from tictactoe.core.constants import CROSS_SYMBOL, NOUGHT_SYMBOL
+from tictactoe.core.constants import CROSS_SYMBOL, NOUGHT_SYMBOL, CORNERS
 
 
 # A simple stub for human.get() is simple.
@@ -105,6 +105,10 @@ def test_bot_wins_when_possible_and_user_not_threatening():
 # method should return the index of the free cell.
 # Do not test a specific strategy (triangles/random),
 # invariant only: the move is correct.
+#
+#   X O X
+#   O X .
+#   . . O
 def test_bot_returns_some_free_cell_when_no_forced_moves():
     board = [
         CROSS_SYMBOL, NOUGHT_SYMBOL, CROSS_SYMBOL,
@@ -118,3 +122,130 @@ def test_bot_returns_some_free_cell_when_no_forced_moves():
     # move must be either None (if the implementation decides to return None on the filled board),
     # or an index within [0..8] per free cell.
     assert move is None or (0 <= move < 9 and board[move] is None)
+
+
+# Blocking a user threat by column:
+#   X . .
+#   X O .
+#   . . .
+# (line 0,3,6 — X X _)
+def test_bot_blocks_immediate_user_win_column():
+    board = [
+        CROSS_SYMBOL, None, None,
+        CROSS_SYMBOL, NOUGHT_SYMBOL, None,
+        None, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    # The bot must block the combination (0,3,6), i.e. put in 6
+    assert move == 6
+
+
+# Diagonally blocking a user threat:
+#   X . .
+#   . X O
+#   . . .
+# (diagonal 0,4,8 — X X _)
+def test_bot_blocks_immediate_user_win_diagonal():
+    board = [
+        CROSS_SYMBOL, None, None,
+        None, CROSS_SYMBOL, NOUGHT_SYMBOL,
+        None, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    # The bot must block the diagonal (0,4,8), i.e. put in 8
+    assert move == 8
+
+
+# Bot victory by column:
+#   . O .
+#   . O X
+#   X . .
+#
+# The bot (O) has two in column 1 (1,4,_), must be completed in 7.
+def test_bot_wins_on_column_when_possible():
+    board = [
+        None, NOUGHT_SYMBOL, None,
+        None, NOUGHT_SYMBOL, CROSS_SYMBOL,
+        CROSS_SYMBOL, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    assert move == 7
+
+
+# Bot victory diagonally:
+#   O X .
+#   X O .
+#   . . .
+#
+# The bot (O) has two on a diagonal of 0,4,_ – you need to win with a move of 8.
+def test_bot_wins_on_diagonal_when_possible():
+    board = [
+        NOUGHT_SYMBOL, CROSS_SYMBOL, None,
+        CROSS_SYMBOL, NOUGHT_SYMBOL, None,
+        None, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    assert move == 8
+
+
+# ======================================================================
+# НОВІ ТЕСТИ: corner-triangular strategies (TRICKY_TRIANGLE_COMBINATIONS_CORNER)
+# ======================================================================
+
+# Case: the center is occupied by the user, the bot has not yet walked.
+#
+#   . . .
+#   . X .
+#   . . .
+#
+# The triangle algorithm should choose one of the angles (0,2,6,8) rather than the edge.
+def test_bot_corner_triangle_when_center_taken_by_user_picks_corner():
+    board = [
+        None, None, None,
+        None, CROSS_SYMBOL, None,
+        None, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    # Must be one of the corners and empty
+    assert move in CORNERS
+    assert board[move] is None
+
+
+# Case: the center and one corner are already occupied by the user, the bot has not yet walked.
+#
+#   X . .
+#   . X .
+#   . . .
+#
+# The corner-strategy should still return some free angle (with CORNERS),
+# and not a rib.
+def test_bot_corner_triangle_when_center_and_one_corner_taken_by_user_picks_other_corner():
+    board = [
+        CROSS_SYMBOL, None, None,
+        None, CROSS_SYMBOL, None,
+        None, None, None,
+    ]
+    game = DummyBotGame(board, human_symbol=CROSS_SYMBOL, bot_symbol=NOUGHT_SYMBOL)
+
+    move = game.find_potentially_winning_step()
+
+    # The angle that is already occupied by the user is 0; We expect another free angle.
+    assert move in CORNERS
+    assert board[move] is None
+    # additionally make sure that the bot has not selected the already occupied 0
+    assert move != 0

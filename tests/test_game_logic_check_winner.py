@@ -44,9 +44,9 @@ def test_check_winner_none_when_no_winner():
     # X O O
     # O X X   (there are no 3 identical in a row anywhere)
     board = [
-        "X", "O", "X",
-        "X", "O", "O",
-        "O", "X", "X",
+        CROSS_SYMBOL, NOUGHT_SYMBOL, CROSS_SYMBOL,
+        CROSS_SYMBOL, NOUGHT_SYMBOL, NOUGHT_SYMBOL,
+        NOUGHT_SYMBOL, CROSS_SYMBOL, CROSS_SYMBOL,
     ]
     game = DummyGame(board)
 
@@ -58,8 +58,8 @@ def test_check_winner_none_when_game_not_finished():
     # . X .
     # . . .
     board = [
-        "X", "O", None,
-        None, "X", None,
+        CROSS_SYMBOL, NOUGHT_SYMBOL, None,
+        None, CROSS_SYMBOL, None,
         None, None, None,
     ]
     game = DummyGame(board)

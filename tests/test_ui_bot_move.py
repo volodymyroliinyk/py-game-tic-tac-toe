@@ -88,6 +88,9 @@ def test_bot_move_falls_back_to_first_free_cell_if_no_smart_step():
     app.current = app.bot
 
     # Let's take a few cells so that the first free one is not 0
+    # X O X
+    # . . .
+    # . . .
     app.board = [
         CROSS_SYMBOL, NOUGHT_SYMBOL, CROSS_SYMBOL,
         None, None, None,

@@ -25,6 +25,9 @@ def test_get_free_winning_combinations_empty_board():
 
 def test_get_free_winning_combinations_filters_opponent_lines():
     # Let's arrange O so that it occupies one payline (e.g. (0,1,2))
+    # O O .
+    # . . .
+    # . . .
     board = [
         NOUGHT_SYMBOL, NOUGHT_SYMBOL, None,
         None, None, None,
@@ -44,6 +47,9 @@ def test_get_free_winning_combinations_filters_opponent_lines():
 
 def test_get_free_winning_combinations_sorted_by_none_count():
     # Let's try to make different degrees of occupancy for X
+    # X X .
+    # X . .
+    # . . .
     board = [
         CROSS_SYMBOL, CROSS_SYMBOL, None,  # (0,1,2) – 1 None
         CROSS_SYMBOL, None, None,  # (3,4,5) – 2 None
@@ -64,6 +70,9 @@ def test_get_free_winning_combinations_sorted_by_none_count():
 
 
 def test_get_free_winning_combinations_for_nought():
+    # X X .
+    # . O .
+    # . . .
     board = [
         CROSS_SYMBOL, CROSS_SYMBOL, None,
         None, NOUGHT_SYMBOL, None,
