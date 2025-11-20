@@ -1,15 +1,24 @@
-
-#  Tic Tac Toe Game (Python)
+# Tic Tac Toe Game (Python, Tkinter)
 
 ## Description
 
-A single-player tic-tac-toe implementation in Python.
+A single-player **Tic-Tac-Toe** game written in **Python 3** using **Tkinter**.
+
+- Bot AI with multiple strategic layers (winning move detection, triangle strategies, center/angles priority).
+- Full UI implementation with images.
 
 ---
 
-## Installation and run:
+## Requirements
 
-**For macOS:**
+- **Python 3.10+**
+- **Tkinter framework** (comes by default on macOS; separate package on Linux)
+
+---
+
+# Installation & Running
+
+## macOS
 
 1) Check Python version `python3 --version`
 2) Install Brew (if not installed):
@@ -19,7 +28,7 @@ A single-player tic-tac-toe implementation in Python.
 5) Go to `/path/to/directory/py-game-tic-tac-toe`
 6) Run application: `PYTHONPATH=src python3 -m main`
 
-**For Ubuntu:**
+## Ubuntu:
 
 1) Check Python version  `python3 --version;`
 2) Install Python 3.x:`sudo apt install python3;`
